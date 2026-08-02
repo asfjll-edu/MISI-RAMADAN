@@ -275,3 +275,26 @@ function closeInfo() {
 function toggleNotes() {
     document.getElementById('notes-modal').classList.toggle('hidden');
 }
+// FUNGSI CIPTA ZARAH BACKGROUND SECARA AUTOMATIK
+function createParticles() {
+    const container = document.getElementById('particles-container');
+    if (!container) return;
+    
+    // Cipta 15 zarah bulat bergerak
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const size = Math.random() * 12 + 6; // Saiz 6px - 18px
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDuration = `${Math.random() * 4 + 4}s`; // Masa 4s - 8s
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(particle);
+    }
+}
+
+// Jalankan sistem zarah sebaik sahaja laman di-load
+window.addEventListener('DOMContentLoaded', createParticles);
