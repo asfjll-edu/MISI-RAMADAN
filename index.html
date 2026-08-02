@@ -3,132 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misi Ramadan Adam – Web Game</title>
-    <!-- Import Game Font (Press Start 2P & Fredoka) -->
+    <title>Misi Ramadan Adam - Retro JRPG</title>
+    <!-- Font Pixel & Retro Arcade -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body id="game-body" class="theme-sahur">
+<body id="game-body">
 
-    <div class="game-container">
-        
-        <!-- BAR STATUS UTAMA (STATS BAR) -->
-        <header id="status-bar" class="hidden">
-            <!-- BAR TENAGA (PROGRESS BAR) -->
-            <div class="stat-group">
-                <div class="stat-label">❤️ Tenaga</div>
-                <div class="hp-bar-bg">
-                    <div id="hp-bar-fill" class="hp-bar-fill" style="width: 100%;"></div>
-                </div>
-            </div>
-
-            <!-- MATA RAMADAN -->
-            <div class="stat-group">
-                <div class="stat-label">🌙 Mata Ramadan</div>
-                <div id="score-display" class="score-badge">0</div>
-            </div>
-
-            <!-- BADGE FASA -->
-            <div class="stat-group">
-                <div class="stat-label">⏰ Fasa</div>
-                <div id="phase-badge" class="phase-badge">🌅 Sahur</div>
-            </div>
-        </header>
-
-        <!-- CONTAINER BEKAS MARKAH TERAPUNG (FLOATING SCORE CONTAINER) -->
-        <div id="floating-container"></div>
-
-        <!-- SKRIN UTAMA (START SCREEN) -->
-        <section id="screen-start" class="screen">
-            <div class="logo-box">
-                <div class="logo-icon">🌙</div>
-                <h1 class="game-title">MISI RAMADAN ADAM</h1>
-                <p class="subtitle">Sehari Berpuasa dengan Betul</p>
-            </div>
+    <!-- BINGKAI KONSOL ARCADE -->
+    <div class="arcade-cabinet">
+        <div class="arcade-screen">
             
-            <div class="button-group">
-                <button onclick="startGame()" class="game-btn btn-start">▶️ MULA PERMAINAN</button>
-                <button onclick="showInfo('how-to-play')" class="game-btn btn-sub">📖 Cara Bermain</button>
-                <button onclick="showInfo('objectives')" class="game-btn btn-sub">🎯 Objektif</button>
-            </div>
+            <!-- OVERLAY ZARAH & EFEK SCANLINE RETRO CRT -->
+            <div class="crt-scanline"></div>
+            <div id="particles-container"></div>
+            <div id="floating-container"></div>
 
-            <!-- MODAL INFO -->
-            <div id="info-modal" class="modal hidden">
-                <div class="modal-card">
-                    <h2 id="modal-title"></h2>
-                    <div id="modal-body"></div>
-                    <button onclick="closeInfo()" class="game-btn btn-close">Tutup</button>
+            <!-- BAR STATUS ATAS (HUD) -->
+            <header id="status-bar" class="hidden">
+                <div class="hud-item">
+                    <span class="hud-label">HP</span>
+                    <div class="hp-bar-bg">
+                        <div id="hp-bar-fill" class="hp-bar-fill" style="width: 100%;"></div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- SKRIN PERMAINAN (GAMEPLAY SCREEN) -->
-        <section id="screen-game" class="screen hidden">
-            <!-- KAD SITUASI INTERAKTIF -->
-            <div class="story-card">
-                <div class="card-header">
-                    <span id="story-phase-icon">🌅</span>
-                    <h2 id="story-title">Situasi</h2>
+                <div class="hud-item">
+                    <span class="hud-label">SCORE</span>
+                    <span id="score-display" class="hud-value">0000</span>
                 </div>
-                <p id="story-text">Teks situasi...</p>
-            </div>
-
-            <!-- MAKLUM BALAS / FEEDBACK -->
-            <div id="feedback-box" class="feedback-card hidden"></div>
-
-            <!-- KAWASAN KAD JAWAPAN -->
-            <div id="options-container" class="options-grid">
-                <!-- Option Buttons dipapar guna JS -->
-            </div>
-        </section>
-
-        <!-- SKRIN KEPUTUSAN AKHIR -->
-        <section id="screen-result" class="screen hidden">
-            <h1 class="result-title">🏆 PERMAINAN TAMAT!</h1>
-            <p>Tahniah! Adam berjaya menamatkan satu hari Ramadan.</p>
-
-            <div class="result-card">
-                <h3>Ringkasan Amalan</h3>
-                <div class="result-stats">
-                    <p>❤️ Tenaga Akhir: <strong id="final-hp">100%</strong></p>
-                    <p>🌙 Mata Ramadan: <strong id="final-score">0</strong></p>
+                <div class="hud-item">
+                    <span id="phase-badge" class="phase-tag">SAHUR</span>
                 </div>
-                <div id="evaluation-badge" class="eval-badge"></div>
-            </div>
+            </header>
 
-            <div class="button-group">
-                <button onclick="resetGame()" class="game-btn btn-start">🔄 MAIN SEMULA</button>
-                <button onclick="toggleNotes()" class="game-btn btn-sub">📖 Lihat Nota Puasa</button>
-            </div>
-
-            <!-- MODAL NOTA -->
-            <div id="notes-modal" class="modal hidden">
-                <div class="modal-card notes-card">
-                    <h2>📌 Nota Ringkas Puasa Ramadan</h2>
-                    <h3>Maksud Puasa</h3>
-                    <p>Menahan diri daripada makan, minum dan perkara yang membatalkan puasa bermula dari terbit fajar hingga terbenam matahari disertai niat.</p>
-                    <h3>Perkara Membatalkan Puasa</h3>
-                    <ul>
-                        <li>Makan / minum dengan sengaja</li>
-                        <li>Muntah dengan sengaja</li>
-                        <li>Memasukkan sesuatu ke rongga terbuka dengan sengaja</li>
-                    </ul>
-                    <h3>Amalan Sunat</h3>
-                    <ul>
-                        <li>Bersahur & menyegerakan berbuka</li>
-                        <li>Berbuka dengan kurma & Solat Tarawih</li>
-                    </ul>
-                    <button onclick="toggleNotes()" class="game-btn btn-close">Tutup Nota</button>
+            <!-- SKRIN MULA (START SCREEN) -->
+            <section id="screen-start" class="screen-view">
+                <div class="start-banner">
+                    <div class="pixel-icon">🌙</div>
+                    <h1 class="game-title">MISI RAMADAN ADAM</h1>
+                    <p class="game-subtitle">- RETRO EDITION -</p>
                 </div>
-            </div>
-        </section>
+                
+                <div class="start-menu">
+                    <button onclick="startGame()" class="jrpg-btn primary">▶ MULA GAME</button>
+                    <button onclick="showInfo('how-to-play')" class="jrpg-btn">📖 CARA MAIN</button>
+                    <button onclick="showInfo('objectives')" class="jrpg-btn">🎯 OBJEKTIF</button>
+                </div>
 
+                <!-- MODAL INFO -->
+                <div id="info-modal" class="modal hidden">
+                    <div class="jrpg-dialog-box modal-box">
+                        <h2 id="modal-title" class="dialog-speaker"></h2>
+                        <div id="modal-body" class="dialog-content"></div>
+                        <button onclick="closeInfo()" class="jrpg-btn btn-small">TUTUP [X]</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SKRIN STAGE / PENTAS GAME (GAMEPLAY) -->
+            <section id="screen-game" class="screen-view hidden">
+                
+                <!-- DUNIA / STAGE UTAMA (PIXEL ENVIRONMENT) -->
+                <div id="game-stage" class="stage-world bg-sahur">
+                    <!-- SPRITE WATAK -->
+                    <div id="sprite-npc" class="sprite npc-sprite">👵</div>
+                    <div id="sprite-adam" class="sprite adam-sprite bounce">🛌</div>
+                </div>
+
+                <!-- DIALOG BOX JRPG (BAHAGIAN BAWAH SKRIN) -->
+                <div class="jrpg-dialog-box">
+                    <div class="speaker-tag">
+                        <span id="speaker-name">MAK</span>
+                    </div>
+
+                    <div id="story-text" class="dialog-content">
+                        Adam, bangun sahur nak...
+                    </div>
+
+                    <!-- MAKLUM BALAS / FEEDBACK -->
+                    <div id="feedback-box" class="dialog-feedback hidden"></div>
+
+                    <!-- PILIHAN JAWAPAN (MENU COMMANDS) -->
+                    <div id="options-container" class="command-grid">
+                        <!-- Pilihan jawapan dimasukkan secara dinamik via JS -->
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SKRIN KEPUTUSAN (RESULT SCREEN) -->
+            <section id="screen-result" class="screen-view hidden">
+                <div class="jrpg-dialog-box result-box">
+                    <h1 class="result-header">🏆 PERMAINAN TAMAT</h1>
+                    <div class="result-stats">
+                        <p>TENAGA AKHIR : <span id="final-hp" class="text-gold">100%</span></p>
+                        <p>MATA RAMADAN : <span id="final-score" class="text-gold">0</span></p>
+                    </div>
+                    <div id="evaluation-badge" class="result-badge"></div>
+                    <div class="result-actions">
+                        <button onclick="resetGame()" class="jrpg-btn primary">🔄 MAIN SEMULA</button>
+                        <button onclick="toggleNotes()" class="jrpg-btn">📖 NOTA PUASA</button>
+                    </div>
+                </div>
+
+                <!-- MODAL NOTA -->
+                <div id="notes-modal" class="modal hidden">
+                    <div class="jrpg-dialog-box modal-box">
+                        <h2 class="dialog-speaker">📌 NOTA RINGKAS PUASA</h2>
+                        <div class="dialog-content notes-text">
+                            <p><strong>Maksud Puasa:</strong> Menahan diri daripada perkara membatalkan puasa dari terbit fajar hingga terbenam matahari beserta niat.</p>
+                            <p><strong>Perkara Batal:</strong> Makan/minum sengaja, muntah sengaja, masuk benda ke rongga terbuka.</p>
+                            <p><strong>Amalan Sunat:</strong> Bersahur, bersegera berbuka, berbuka dengan kurma & Solat Tarawih.</p>
+                        </div>
+                        <button onclick="toggleNotes()" class="jrpg-btn btn-small">TUTUP [X]</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
     </div>
 
     <script src="script.js"></script>
 </body>
-    <!-- Diletakkan di atas sekali dalam <body> -->
-<div id="particles-container"></div>
 </html>
