@@ -9,6 +9,10 @@
     --green: #22c55e;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #0f172a;
     margin: 0;
@@ -22,16 +26,15 @@ body {
     user-select: none;
 }
 
-/* BINGKAI KONSOL ARCADE (16:9 Aspect Ratio) */
+/* BINGKAI KONSOL ARCADE */
 .arcade-cabinet {
     width: 100%;
     max-width: 520px;
     background: #1e293b;
     border: 8px solid #334155;
     border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     padding: 12px;
-    box-sizing: border-box;
 }
 
 .arcade-screen {
@@ -45,7 +48,7 @@ body {
     flex-direction: column;
 }
 
-/* CRT SCANLINE EFFECT (GAYA TV RETRO) */
+/* CRT SCANLINE EFFECT */
 .crt-scanline {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -59,7 +62,7 @@ body {
 #status-bar {
     position: absolute;
     top: 10px; left: 10px; right: 10px;
-    background: rgba(3, 7, 18, 0.85);
+    background: rgba(3, 7, 18, 0.9);
     border: 2px solid var(--jrpg-border);
     border-radius: 8px;
     padding: 8px 12px;
@@ -70,12 +73,20 @@ body {
     box-shadow: 0 4px 0 rgba(0,0,0,0.5);
 }
 
-.hud-item { display: flex; align-items: center; gap: 8px; }
-.hud-label { font-size: 0.6em; color: var(--gold); }
-.hud-value { font-size: 0.75em; color: #fff; }
+.hud-item { display: flex; align-items: center; gap: 6px; }
+.hud-label { font-size: 0.55em; color: var(--gold); }
+.hud-value { font-size: 0.7em; color: #fff; }
+
+.sound-toggle-btn {
+    background: transparent;
+    border: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    padding: 0 4px;
+}
 
 .hp-bar-bg {
-    width: 80px; height: 12px;
+    width: 75px; height: 12px;
     background: #374151;
     border: 2px solid #fff;
     border-radius: 4px;
@@ -89,7 +100,7 @@ body {
 }
 
 .phase-tag {
-    font-size: 0.6em;
+    font-size: 0.55em;
     background: var(--cyan);
     color: #000;
     padding: 3px 6px;
@@ -97,7 +108,7 @@ body {
     font-weight: bold;
 }
 
-/* STAGE WORLD (DUNIA GAMBARAN LANGSUNG) */
+/* STAGE WORLD */
 .stage-world {
     flex: 1;
     position: relative;
@@ -109,7 +120,6 @@ body {
     border-bottom: 4px solid #000;
 }
 
-/* TEMA DYNAMIC BACKGROUND FASA */
 .bg-sahur   { background: linear-gradient(to bottom, #090d16, #1e1b4b, #311b92); }
 .bg-sekolah { background: linear-gradient(to bottom, #0284c7, #38bdf8, #bae6fd); }
 .bg-petang  { background: linear-gradient(to bottom, #c2410c, #ea580c, #fed7aa); }
@@ -138,9 +148,9 @@ body {
     50% { transform: translateX(10px); }
 }
 
-/* DIALOGUE BOX JRPG (PINTAS BAWAH SKRIN) */
+/* DIALOGUE BOX JRPG */
 .jrpg-dialog-box {
-    background: rgba(3, 7, 18, 0.92);
+    background: rgba(3, 7, 18, 0.95);
     border: 4px solid var(--jrpg-border);
     border-radius: 10px;
     margin: 8px;
@@ -155,25 +165,25 @@ body {
     color: #000;
     display: inline-block;
     padding: 4px 8px;
-    font-size: 0.65em;
+    font-size: 0.6em;
     border-radius: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .dialog-content {
     font-family: var(--font-retro);
-    font-size: 1.45em;
+    font-size: 1.35em;
     line-height: 1.25;
     color: #f3f4f6;
-    min-height: 52px;
+    min-height: 44px;
 }
 
-/* COMMAND GRID (PILIHAN JAWAPAN STYLES JRPG) */
+/* COMMAND GRID */
 .command-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 6px;
+    margin-top: 8px;
 }
 
 .command-btn {
@@ -181,41 +191,36 @@ body {
     border: 2px solid #4b5563;
     color: #fff;
     font-family: var(--font-retro);
-    font-size: 1.35em;
-    padding: 8px 12px;
+    font-size: 1.25em;
+    padding: 6px 10px;
     border-radius: 6px;
     text-align: left;
     cursor: pointer;
     transition: all 0.1s ease;
-    display: flex;
-    align-items: center;
 }
 
-.command-btn:before {
-    content: "▶ ";
-    color: transparent;
-    margin-right: 6px;
-}
-
-.command-btn:hover {
+.command-btn:hover:not(:disabled) {
     border-color: var(--gold);
     background: #1f2937;
     color: var(--gold);
 }
 
-.command-btn:hover:before { color: var(--gold); }
-.command-btn:active { transform: scale(0.98); }
+.command-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 /* FEEDBACK */
 .dialog-feedback {
     font-family: var(--font-retro);
-    font-size: 1.3em;
-    padding: 8px;
+    font-size: 1.2em;
+    padding: 6px 10px;
     border-radius: 6px;
     margin-top: 8px;
+    line-height: 1.2;
 }
-.dialog-feedback.correct { background: rgba(34, 197, 94, 0.2); border: 2px solid var(--green); color: #86efac; }
-.dialog-feedback.wrong { background: rgba(239, 68, 68, 0.2); border: 2px solid var(--red); color: #fca5a5; }
+.dialog-feedback.correct { background: rgba(34, 197, 94, 0.25); border: 2px solid var(--green); color: #86efac; }
+.dialog-feedback.wrong { background: rgba(239, 68, 68, 0.25); border: 2px solid var(--red); color: #fca5a5; }
 
 /* SKRIN START & RESULT */
 .screen-view {
@@ -225,19 +230,19 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    box-sizing: border-box;
+    text-align: center;
 }
 
-.start-banner { text-align: center; margin-bottom: 25px; }
+.start-banner { margin-bottom: 25px; }
 .pixel-icon { font-size: 60px; animation: spriteBounce 2s infinite; }
-.game-title { font-size: 0.9em; line-height: 1.6; color: var(--gold); text-shadow: 3px 3px 0 #000; }
+.game-title { font-size: 0.85em; line-height: 1.6; color: var(--gold); text-shadow: 3px 3px 0 #000; }
 .game-subtitle { font-size: 0.55em; color: var(--cyan); margin-top: 8px; }
 
 .start-menu { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; }
 
 .jrpg-btn {
     font-family: var(--font-pixel);
-    font-size: 0.65em;
+    font-size: 0.6em;
     padding: 12px;
     background: #1f2937;
     border: 3px solid var(--jrpg-border);
@@ -250,7 +255,10 @@ body {
 .jrpg-btn:active { transform: translateY(3px); box-shadow: none; }
 .btn-small { margin-top: 10px; width: 100%; font-size: 0.55em; }
 
-/* MODAL & POPUP */
+.result-header { font-size: 0.8em; color: var(--gold); margin-bottom: 15px; }
+.result-stats { font-family: var(--font-retro); font-size: 1.4em; margin-bottom: 10px; }
+
+/* MODAL */
 .modal {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -268,14 +276,14 @@ body {
 /* FLOATING SCORE POPUP */
 #floating-container {
     position: absolute;
-    top: 60px; right: 20px;
+    top: 50px; right: 20px;
     pointer-events: none;
     z-index: 30;
 }
 
 .float-score {
     font-family: var(--font-pixel);
-    font-size: 0.8em;
+    font-size: 0.75em;
     animation: floatAnim 1s forwards ease-out;
     text-shadow: 2px 2px 0 #000;
 }
@@ -284,6 +292,14 @@ body {
     0% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-30px); }
 }
+
+.result-badge {
+    margin-top: 10px;
+    font-size: 0.6em;
+    line-height: 1.4;
+}
+
+.result-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; width: 100%; max-width: 250px; }
 
 .hidden { display: none !important; }
 .text-gold { color: var(--gold); }
