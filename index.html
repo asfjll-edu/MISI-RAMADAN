@@ -10,15 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body id="game-body">
+<body>
 
     <!-- BINGKAI KONSOL ARCADE -->
     <div class="arcade-cabinet">
         <div class="arcade-screen">
             
-            <!-- OVERLAY ZARAH & EFEK SCANLINE RETRO CRT -->
+            <!-- OVERLAY CRT SCANLINE & CONTAINER POPUP MARKAH -->
             <div class="crt-scanline"></div>
-            <div id="particles-container"></div>
             <div id="floating-container"></div>
 
             <!-- BAR STATUS ATAS (HUD) -->
@@ -34,6 +33,7 @@
                     <span id="score-display" class="hud-value">0000</span>
                 </div>
                 <div class="hud-item">
+                    <button id="sound-btn" onclick="toggleAudio()" class="sound-toggle-btn">🔊</button>
                     <span id="phase-badge" class="phase-tag">SAHUR</span>
                 </div>
             </header>
@@ -55,7 +55,7 @@
                 <!-- MODAL INFO -->
                 <div id="info-modal" class="modal hidden">
                     <div class="jrpg-dialog-box modal-box">
-                        <h2 id="modal-title" class="dialog-speaker"></h2>
+                        <h2 id="modal-title" class="speaker-tag"></h2>
                         <div id="modal-body" class="dialog-content"></div>
                         <button onclick="closeInfo()" class="jrpg-btn btn-small">TUTUP [X]</button>
                     </div>
@@ -65,14 +65,14 @@
             <!-- SKRIN STAGE / PENTAS GAME (GAMEPLAY) -->
             <section id="screen-game" class="screen-view hidden">
                 
-                <!-- DUNIA / STAGE UTAMA (PIXEL ENVIRONMENT) -->
+                <!-- DUNIA / STAGE UTAMA -->
                 <div id="game-stage" class="stage-world bg-sahur">
                     <!-- SPRITE WATAK -->
                     <div id="sprite-npc" class="sprite npc-sprite">👵</div>
                     <div id="sprite-adam" class="sprite adam-sprite bounce">🛌</div>
                 </div>
 
-                <!-- DIALOG BOX JRPG (BAHAGIAN BAWAH SKRIN) -->
+                <!-- DIALOG BOX JRPG -->
                 <div class="jrpg-dialog-box">
                     <div class="speaker-tag">
                         <span id="speaker-name">MAK</span>
@@ -85,10 +85,8 @@
                     <!-- MAKLUM BALAS / FEEDBACK -->
                     <div id="feedback-box" class="dialog-feedback hidden"></div>
 
-                    <!-- PILIHAN JAWAPAN (MENU COMMANDS) -->
-                    <div id="options-container" class="command-grid">
-                        <!-- Pilihan jawapan dimasukkan secara dinamik via JS -->
-                    </div>
+                    <!-- PILIHAN JAWAPAN -->
+                    <div id="options-container" class="command-grid"></div>
                 </div>
 
             </section>
@@ -99,7 +97,7 @@
                     <h1 class="result-header">🏆 PERMAINAN TAMAT</h1>
                     <div class="result-stats">
                         <p>TENAGA AKHIR : <span id="final-hp" class="text-gold">100%</span></p>
-                        <p>MATA RAMADAN : <span id="final-score" class="text-gold">0</span></p>
+                        <p>TOTAL SCORE  : <span id="final-score" class="text-gold">0</span></p>
                     </div>
                     <div id="evaluation-badge" class="result-badge"></div>
                     <div class="result-actions">
@@ -111,7 +109,7 @@
                 <!-- MODAL NOTA -->
                 <div id="notes-modal" class="modal hidden">
                     <div class="jrpg-dialog-box modal-box">
-                        <h2 class="dialog-speaker">📌 NOTA RINGKAS PUASA</h2>
+                        <h2 class="speaker-tag">📌 NOTA RINGKAS PUASA</h2>
                         <div class="dialog-content notes-text">
                             <p><strong>Maksud Puasa:</strong> Menahan diri daripada perkara membatalkan puasa dari terbit fajar hingga terbenam matahari beserta niat.</p>
                             <p><strong>Perkara Batal:</strong> Makan/minum sengaja, muntah sengaja, masuk benda ke rongga terbuka.</p>
