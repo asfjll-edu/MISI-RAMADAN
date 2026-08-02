@@ -1,185 +1,242 @@
+/* METRIK FONTS & WARNA UTAMA */
 :root {
-    --primary-color: #2e7d32;
-    --secondary-color: #0288d1;
-    --accent-color: #fbc02d;
-    --bg-color: #e8f5e9;
-    --card-bg: #ffffff;
+    --font-game: 'Press Start 2P', monospace;
+    --font-ui: 'Fredoka', sans-serif;
+    --primary-color: #ffca28;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-color: #2c3e50;
 }
 
+/* TEMA WARNA DINAMIK MENGIKUT FASA */
+body.theme-sahur   { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); } /* Biru Malam / Sahur */
+body.theme-sekolah { background: linear-gradient(135deg, #2980b9, #6dd5fa, #ffffff); } /* Biru Siang Terang */
+body.theme-petang  { background: linear-gradient(135deg, #f857a6, #ff5858); }          /* Oren / Jingga Petang */
+body.theme-berbuka { background: linear-gradient(135deg, #4a00e0, #8e2de2); }          /* Ungu Senja Maghrib */
+
 body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--bg-color);
+    font-family: var(--font-ui);
+    color: var(--text-color);
     margin: 0;
-    padding: 10px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    transition: background 0.8s ease;
+    box-sizing: border-box;
 }
 
 .game-container {
     background-color: var(--card-bg);
     width: 100%;
-    max-width: 500px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    padding: 15px;
+    max-width: 480px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    padding: 20px;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden;
+    border: 4px solid #ffffff;
 }
 
+/* BAR STATUS GAME */
 #status-bar {
     display: flex;
-    justify-content: space-around;
-    background-color: #c8e6c9;
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-weight: bold;
-    margin-bottom: 12px;
+    justify-content: space-between;
+    align-items: center;
+    background: #111827;
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
 }
 
-.screen { text-align: center; }
+.stat-group { display: flex; flex-direction: column; gap: 4px; }
+.stat-label { font-size: 0.7em; font-weight: 700; color: #9ca3af; text-transform: uppercase; }
 
-/* PENTAS VISUAL / STAGE */
-.stage {
-    width: 100%;
-    height: 220px;
-    border-radius: 15px;
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    padding-bottom: 20px;
-    box-sizing: border-box;
-    transition: background 0.5s ease;
+/* HP BAR VISUAL */
+.hp-bar-bg {
+    width: 110px;
+    height: 16px;
+    background-color: #374151;
+    border-radius: 10px;
     overflow: hidden;
-    border: 3px solid #333;
+    border: 2px solid #4b5563;
 }
 
-/* BACKGROUND MENGIKUT FASA */
-.bg-bilik { background: linear-gradient(to bottom, #1a237e, #3949ab); } /* Malam/Subuh */
-.bg-sekolah { background: linear-gradient(to bottom, #81d4fa, #e0f7fa); } /* Siang Terang */
-.bg-petang { background: linear-gradient(to bottom, #ffcc80, #ffe0b2); } /* Petang */
-.bg-berbuka { background: linear-gradient(to bottom, #4a148c, #8e24aa); } /* Maghrib */
-
-/* WATAK (CHARACTERS) */
-.character {
-    font-size: 65px;
-    transition: transform 0.4s ease, filter 0.3s ease;
-    user-select: none;
+.hp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #10b981);
+    transition: width 0.4s ease-in-out;
+    border-radius: 8px;
 }
 
-/* ANIMASI WATAK */
-.bounce { animation: bounce 1.5s infinite; }
-.shake { animation: shake 0.5s; }
-.walk-right { transform: translateX(30px); }
-.walk-left { transform: translateX(-30px); }
-.jump { transform: translateY(-30px); }
+.score-badge { font-family: var(--font-game); color: #f59e0b; font-size: 0.85em; }
+.phase-badge { font-weight: 700; font-size: 0.85em; color: #38bdf8; }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+/* LOGO & SKRIN UTAMA */
+.screen { text-align: center; }
+.logo-box { margin-bottom: 25px; }
+.logo-icon { font-size: 60px; animation: pulse 2s infinite; }
+
+.game-title {
+    font-family: var(--font-game);
+    font-size: 1.1em;
+    color: #1e293b;
+    line-height: 1.5;
+    margin: 10px 0;
+    text-shadow: 2px 2px 0px #cbd5e1;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-8px); }
-    40%, 80% { transform: translateX(8px); }
+.subtitle { font-weight: 600; color: #64748b; margin: 0; }
+
+/* BUTTONS BUTTON 3D STYLE */
+.button-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+
+.game-btn {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 1em;
+    padding: 14px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
-/* SPEECH BUBBLE (COMIC STYLE) */
-.speech-bubble {
-    position: absolute;
-    top: 12px;
-    left: 10px;
-    right: 10px;
-    background: white;
-    border: 3px solid #333;
-    border-radius: 12px;
-    padding: 10px;
-    font-size: 0.95em;
-    font-weight: 600;
-    text-align: left;
-    box-shadow: 2px 4px 0px rgba(0,0,0,0.15);
+.btn-start {
+    background-color: #22c55e;
+    color: #ffffff;
+    box-shadow: 0 6px 0 #15803d;
 }
 
-#speaker-name { color: var(--secondary-color); font-weight: bold; }
+.btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
 
-/* OPTIONS & BUTTONS */
-.options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.btn-sub {
+    background-color: #0ea5e9;
+    color: #ffffff;
+    box-shadow: 0 5px 0 #0369a1;
+}
+
+.btn-sub:active { transform: translateY(3px); box-shadow: 0 2px 0 #0369a1; }
+
+.btn-close {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 4px 0 #b91c1c;
+    width: 100%;
     margin-top: 15px;
 }
 
-.option-btn {
-    background: #ffffff;
-    border: 2px solid #29b6f6;
-    color: #0277bd;
-    padding: 12px 15px;
-    border-radius: 12px;
+/* KAD SITUASI & OPTIONS */
+.story-card {
+    background: #f8fafc;
+    border: 3px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 16px;
     text-align: left;
-    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 15px;
+}
+
+.card-header { display: flex; align-items: center; gap: 8px; font-size: 1.2em; color: #0f172a; }
+.card-header h2 { margin: 0; font-size: 0.9em; font-family: var(--font-game); }
+
+#story-text { font-size: 1.05em; line-height: 1.5; color: #334155; margin-top: 10px; font-weight: 600; }
+
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.option-card {
+    background: #ffffff;
+    border: 2px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 700;
     font-size: 0.95em;
+    color: #1e293b;
     cursor: pointer;
-    box-shadow: 0 3px 0 #0288d1;
-    transition: all 0.1s ease;
+    box-shadow: 0 4px 0 #cbd5e1;
+    transition: all 0.15s ease;
 }
 
-.option-btn:active {
-    transform: translateY(3px);
-    box-shadow: none;
+.option-card:hover { border-color: #3b82f6; background-color: #eff6ff; }
+.option-card:active { transform: translateY(3px); box-shadow: 0 1px 0 #3b82f6; }
+
+/* FEEDBACK CARD */
+.feedback-card {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.9em;
+    text-align: left;
+    margin-bottom: 12px;
+}
+.feedback-card.correct { background-color: #dcfce7; color: #166534; border: 2px solid #86efac; }
+.feedback-card.wrong { background-color: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
+
+/* POPUP MARKAH TERAPUNG (FLOATING SCORE) */
+#floating-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    pointer-events: none;
+    z-index: 99;
 }
 
-.btn {
-    padding: 12px 20px;
+.float-text {
+    font-family: var(--font-game);
     font-size: 1em;
     font-weight: bold;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
+    animation: floatUp 1.2s forwards ease-out;
+    text-shadow: 2px 2px 0px #000;
 }
 
-.btn-primary { background: var(--primary-color); color: white; }
-.btn-secondary { background: var(--secondary-color); color: white; }
-
-.feedback {
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
-    font-weight: bold;
-    text-align: left;
-    font-size: 0.9em;
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(0.8); }
+    50% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1); }
 }
-.feedback.correct { background: #d4edda; color: #155724; }
-.feedback.wrong { background: #f8d7da; color: #721c24; }
 
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* MODAL & RESULT */
 .modal {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(15, 23, 42, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
+    border-radius: 20px;
 }
 
-.modal-content {
+.modal-card {
     background: white;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 18px;
     max-height: 80vh;
     overflow-y: auto;
+    text-align: left;
 }
 
-.score-card {
-    background: #fffde7;
-    border: 2px dashed var(--accent-color);
+.result-card {
+    background: #fef3c7;
+    border: 3px dashed #f59e0b;
+    border-radius: 18px;
     padding: 15px;
+    margin: 20px 0;
+}
+
+.eval-badge {
+    font-weight: 700;
+    padding: 10px;
     border-radius: 12px;
-    margin: 15px 0;
+    margin-top: 10px;
 }
 
 .hidden { display: none !important; }
