@@ -3,108 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misi Ramadan Adam – Interactive Visual Novel</title>
+    <title>Misi Ramadan Adam – Web Game</title>
+    <!-- Import Game Font (Press Start 2P & Fredoka) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="game-body" class="theme-sahur">
 
     <div class="game-container">
-        <!-- BAR STATUS GAME -->
+        
+        <!-- BAR STATUS UTAMA (STATS BAR) -->
         <header id="status-bar" class="hidden">
-            <div class="stat-box">❤️ <span id="hp">100</span></div>
-            <div class="stat-box">🌙 <span id="score">0</span></div>
-            <div class="stat-box">⏰ <span id="phase">Sahur</span></div>
-        </header>
-
-        <!-- SKRIN UTAMA (START) -->
-        <section id="screen-start" class="screen">
-            <h1 class="game-title">🌙 Misi Ramadan Adam</h1>
-            <p class="subtitle">Kembara Sehari Berpuasa</p>
-            
-            <div class="avatar-preview">
-                <div class="char-emoji bounce">👦</div>
+            <!-- BAR TENAGA (PROGRESS BAR) -->
+            <div class="stat-group">
+                <div class="stat-label">❤️ Tenaga</div>
+                <div class="hp-bar-bg">
+                    <div id="hp-bar-fill" class="hp-bar-fill" style="width: 100%;"></div>
+                </div>
             </div>
 
+            <!-- MATA RAMADAN -->
+            <div class="stat-group">
+                <div class="stat-label">🌙 Mata Ramadan</div>
+                <div id="score-display" class="score-badge">0</div>
+            </div>
+
+            <!-- BADGE FASA -->
+            <div class="stat-group">
+                <div class="stat-label">⏰ Fasa</div>
+                <div id="phase-badge" class="phase-badge">🌅 Sahur</div>
+            </div>
+        </header>
+
+        <!-- CONTAINER BEKAS MARKAH TERAPUNG (FLOATING SCORE CONTAINER) -->
+        <div id="floating-container"></div>
+
+        <!-- SKRIN UTAMA (START SCREEN) -->
+        <section id="screen-start" class="screen">
+            <div class="logo-box">
+                <div class="logo-icon">🌙</div>
+                <h1 class="game-title">MISI RAMADAN ADAM</h1>
+                <p class="subtitle">Sehari Berpuasa dengan Betul</p>
+            </div>
+            
             <div class="button-group">
-                <button onclick="startGame()" class="btn btn-primary">▶️ Mula Permainan</button>
-                <button onclick="showInfo('how-to-play')" class="btn btn-secondary">📖 Cara Bermain</button>
-                <button onclick="showInfo('objectives')" class="btn btn-secondary">🎯 Objektif</button>
+                <button onclick="startGame()" class="game-btn btn-start">▶️ MULA PERMAINAN</button>
+                <button onclick="showInfo('how-to-play')" class="game-btn btn-sub">📖 Cara Bermain</button>
+                <button onclick="showInfo('objectives')" class="game-btn btn-sub">🎯 Objektif</button>
             </div>
 
             <!-- MODAL INFO -->
             <div id="info-modal" class="modal hidden">
-                <div class="modal-content">
+                <div class="modal-card">
                     <h2 id="modal-title"></h2>
                     <div id="modal-body"></div>
-                    <button onclick="closeInfo()" class="btn btn-primary">Tutup</button>
+                    <button onclick="closeInfo()" class="game-btn btn-close">Tutup</button>
                 </div>
             </div>
         </section>
 
-        <!-- SKRIN PERMAINAN (STAGE VISUAL NOVEL) -->
+        <!-- SKRIN PERMAINAN (GAMEPLAY SCREEN) -->
         <section id="screen-game" class="screen hidden">
-            
-            <!-- STAGE / PENTAS VISUAL (Background + Watak) -->
-            <div id="game-stage" class="stage bg-bilik">
-                <!-- WATAK ADAM & WATAK SAMPINGAN -->
-                <div id="char-npc" class="character npc hidden">👵</div>
-                <div id="char-adam" class="character adam sleeping">🛌</div>
-
-                <!-- GELEMBUNG DIALOG (SPEECH BUBBLE) -->
-                <div id="speech-bubble" class="speech-bubble">
-                    <span id="speaker-name">Mak</span>: 
-                    <span id="dialogue-text">Adam, bangun sahur nak...</span>
+            <!-- KAD SITUASI INTERAKTIF -->
+            <div class="story-card">
+                <div class="card-header">
+                    <span id="story-phase-icon">🌅</span>
+                    <h2 id="story-title">Situasi</h2>
                 </div>
+                <p id="story-text">Teks situasi...</p>
             </div>
 
-            <!-- MAKLUM BALAS / REAKSI (FEEDBACK) -->
-            <div id="feedback-box" class="feedback hidden"></div>
+            <!-- MAKLUM BALAS / FEEDBACK -->
+            <div id="feedback-box" class="feedback-card hidden"></div>
 
-            <!-- KAWASAN PILIHAN JAWAPAN -->
+            <!-- KAWASAN KAD JAWAPAN -->
             <div id="options-container" class="options-grid">
-                <!-- Butang pilihan akan muncul di sini secara dinamik -->
+                <!-- Option Buttons dipapar guna JS -->
             </div>
         </section>
 
         <!-- SKRIN KEPUTUSAN AKHIR -->
         <section id="screen-result" class="screen hidden">
-            <h1>🏆 Permainan Tamat!</h1>
+            <h1 class="result-title">🏆 PERMAINAN TAMAT!</h1>
             <p>Tahniah! Adam berjaya menamatkan satu hari Ramadan.</p>
 
-            <div class="score-card">
+            <div class="result-card">
                 <h3>Ringkasan Amalan</h3>
-                <p>❤️ Tenaga Akhir : <strong id="final-hp">0</strong></p>
-                <p>🌙 Mata Ramadan : <strong id="final-score">0</strong></p>
-                <hr>
-                <div id="evaluation-badge" class="badge"></div>
+                <div class="result-stats">
+                    <p>❤️ Tenaga Akhir: <strong id="final-hp">100%</strong></p>
+                    <p>🌙 Mata Ramadan: <strong id="final-score">0</strong></p>
+                </div>
+                <div id="evaluation-badge" class="eval-badge"></div>
             </div>
 
             <div class="button-group">
-                <button onclick="resetGame()" class="btn btn-primary">🔄 Main Semula</button>
-                <button onclick="toggleNotes()" class="btn btn-secondary">📖 Lihat Nota Puasa</button>
+                <button onclick="resetGame()" class="game-btn btn-start">🔄 MAIN SEMULA</button>
+                <button onclick="toggleNotes()" class="game-btn btn-sub">📖 Lihat Nota Puasa</button>
             </div>
 
-            <!-- MODAL NOTA PUASA -->
+            <!-- MODAL NOTA -->
             <div id="notes-modal" class="modal hidden">
-                <div class="modal-content notes-content">
+                <div class="modal-card notes-card">
                     <h2>📌 Nota Ringkas Puasa Ramadan</h2>
                     <h3>Maksud Puasa</h3>
                     <p>Menahan diri daripada makan, minum dan perkara yang membatalkan puasa bermula dari terbit fajar hingga terbenam matahari disertai niat.</p>
                     <h3>Perkara Membatalkan Puasa</h3>
                     <ul>
-                        <li>Makan/minum dengan sengaja</li>
+                        <li>Makan / minum dengan sengaja</li>
                         <li>Muntah dengan sengaja</li>
-                        <li>Memasukkan sesuatu ke rongga terbuka secara sengaja</li>
+                        <li>Memasukkan sesuatu ke rongga terbuka dengan sengaja</li>
                     </ul>
                     <h3>Amalan Sunat</h3>
                     <ul>
                         <li>Bersahur & menyegerakan berbuka</li>
                         <li>Berbuka dengan kurma & Solat Tarawih</li>
                     </ul>
-                    <button onclick="toggleNotes()" class="btn btn-primary">Tutup Nota</button>
+                    <button onclick="toggleNotes()" class="game-btn btn-close">Tutup Nota</button>
                 </div>
             </div>
         </section>
+
     </div>
 
     <script src="script.js"></script>
