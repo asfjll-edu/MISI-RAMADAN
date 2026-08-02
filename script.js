@@ -1,118 +1,131 @@
-// DATA GAMEPLAY & WARNA FASA
-const gameData = [
+// DATA JRPG STORYLINE & SPRITE STATES
+const storyData = [
     // FASA 1: SAHUR
     {
-        phase: "Sahur",
-        phaseIcon: "🌅",
-        themeClass: "theme-sahur",
-        title: "Sahur (4:30 Pagi)",
-        text: "Jam loceng berbunyi! Mak mengejutkan Adam untuk bersahur. Apa tindakan Adam?",
+        phase: "SAHUR",
+        bgClass: "bg-sahur",
+        speaker: "MAK",
+        dialogue: "Adam, bangun sahur nak... Nanti lapar siang hari.",
+        adamSprite: "🛌",
+        npcSprite: "👵",
         options: [
             {
-                text: "😴 Sambung tidur...",
-                feedback: "Adam tidak bersahur. Dia mungkin cepat letih pada waktu siang.",
+                text: "A. Sambung tidur...",
+                feedback: "Adam tidak bersahur. Adam rasa cepat letih pada waktu siang.",
+                adamAction: "shake",
+                nextSprite: "😴",
                 hpChange: -20, scoreChange: 0, nextStep: 1, isCorrect: false
             },
             {
-                text: "🍞 Bangun bersahur & berniat",
+                text: "B. Bangun bersahur & berniat",
                 feedback: "Bagus! Bersahur ialah amalan sunat yang digalakkan.",
+                adamAction: "jump",
+                nextSprite: "👦",
                 hpChange: 10, scoreChange: 15, nextStep: 1, isCorrect: true
             }
         ]
     },
     {
-        phase: "Sahur",
-        phaseIcon: "🌅",
-        themeClass: "theme-sahur",
-        title: "Mini Kuiz Niat",
-        text: "Bilakah niat puasa Ramadan perlu dilakukan?",
+        phase: "SAHUR",
+        bgClass: "bg-sahur",
+        speaker: "MAK",
+        dialogue: "Bilakah waktu kita perlu berniat puasa Ramadan, Adam?",
+        adamSprite: "👦",
+        npcSprite: "👵",
         options: [
-            { text: "A. Selepas berbuka", feedback: "Salah. Niat puasa hendaklah dilakukan sebelum terbit fajar.", hpChange: 0, scoreChange: 0, retry: true },
-            { text: "B. Waktu malam sebelum terbit fajar", feedback: "Betul! Niat puasa Ramadan dilakukan pada waktu malam sebelum terbit fajar.", hpChange: 0, scoreChange: 10, nextStep: 2, isCorrect: true },
-            { text: "C. Selepas solat Zuhur", feedback: "Salah. Waktu ini sudah terlewat untuk berniat.", hpChange: 0, scoreChange: 0, retry: true }
+            { text: "A. Selepas berbuka", feedback: "Salah. Niat puasa hendaklah dibuat sebelum terbit fajar.", adamAction: "shake", retry: true },
+            { text: "B. Waktu malam sebelum terbit fajar", feedback: "Betul! Niat puasa Ramadan dilakukan pada waktu malam.", adamAction: "jump", hpChange: 0, scoreChange: 10, nextStep: 2, isCorrect: true },
+            { text: "C. Selepas solat Zuhur", feedback: "Salah. Waktu ini sudah terlewat untuk berniat.", adamAction: "shake", retry: true }
         ]
     },
 
     // FASA 2: SEKOLAH
     {
-        phase: "Sekolah",
-        phaseIcon: "🏫",
-        themeClass: "theme-sekolah",
-        title: "Waktu Rehat (12:00 T/Hari)",
-        text: "Kawan-kawan sedang makan di kantin. Adam berasa sangat lapar.",
+        phase: "SEKOLAH",
+        bgClass: "bg-sekolah",
+        speaker: "KAWAN",
+        dialogue: "Adam! Jom makan ayam goreng kat kantin ni, sedapnya!",
+        adamSprite: "😰",
+        npcSprite: "👦",
         options: [
-            { text: "🍟 Makan sedikit makanan", feedback: "Makan dengan sengaja membatalkan puasa!", hpChange: 0, scoreChange: -5, retry: true },
-            { text: "📚 Pergi perpustakaan & berehat", feedback: "Bagus! Adam menjaga puasanya dengan aktiviti bermanfaat.", hpChange: -10, scoreChange: 15, nextStep: 3, isCorrect: true }
+            { text: "A. Makan sikit sahaja...", feedback: "Makan dengan sengaja membatalkan puasa!", adamAction: "shake", scoreChange: -5, retry: true },
+            { text: "B. Pergi berehat di perpustakaan", feedback: "Bagus! Adam menjaga puasanya dan membaca buku.", adamAction: "jump", nextSprite: "👦", hpChange: -10, scoreChange: 15, nextStep: 3, isCorrect: true }
         ]
     },
     {
-        phase: "Sekolah",
-        phaseIcon: "🏫",
-        themeClass: "theme-sekolah",
-        title: "Ujian Tidak Sengaja",
-        text: "Tiba-tiba hidung Adam berdarah sedikit. Adakah puasa Adam batal?",
+        phase: "SEKOLAH",
+        bgClass: "bg-sekolah",
+        speaker: "CIKGU",
+        dialogue: "Adam, hidung kamu berdarah! Adakah puasa kamu batal?",
+        adamSprite: "🩸",
+        npcSprite: "👩‍🏫",
         options: [
-            { text: "❌ Ya, batal", feedback: "Salah. Darah yang keluar tanpa disengajakan tidak membatalkan puasa.", hpChange: 0, scoreChange: 0, retry: true },
-            { text: "✅ Tidak batal", feedback: "Betul! Perkara tidak disengajakan tidak membatalkan puasa.", hpChange: 0, scoreChange: 10, nextStep: 4, isCorrect: true }
+            { text: "A. Ya, batal!", feedback: "Salah. Darah yang keluar tanpa disengaja tidak membatalkan puasa.", adamAction: "shake", retry: true },
+            { text: "B. Tidak batal!", feedback: "Betul! Perkara tidak disengajakan tidak membatalkan puasa.", adamAction: "jump", nextSprite: "😊", hpChange: 0, scoreChange: 10, nextStep: 4, isCorrect: true }
         ]
     },
     {
-        phase: "Sekolah",
-        phaseIcon: "🏫",
-        themeClass: "theme-sekolah",
-        title: "Kawan Mengajak Bergaduh",
-        text: "Kawan mengejek Adam kerana kelihatan letih. Apa tindakan Adam?",
+        phase: "SEKOLAH",
+        bgClass: "bg-sekolah",
+        speaker: "KAWAN NAKAL",
+        dialogue: "Haha! Adam lemah, muka pucat macam hantu!",
+        adamSprite: "😔",
+        npcSprite: "😜",
         options: [
-            { text: "😡 Membalas dengan marah", feedback: "Orang berpuasa digalakkan menahan marah.", hpChange: 0, scoreChange: -5, retry: true },
-            { text: "😇 Bersabar & bercakap baik", feedback: "Bagus! Menahan marah ialah akhlak terpuji.", hpChange: 0, scoreChange: 15, nextStep: 5, isCorrect: true }
+            { text: "A. Membalas dengan marah", feedback: "Orang berpuasa hendaklah menahan marah.", adamAction: "shake", scoreChange: -5, retry: true },
+            { text: "B. Bersabar & katakan 'Aku berpuasa'", feedback: "Cemerlang! Menahan marah mendapat pahala yang besar.", adamAction: "jump", nextSprite: "😇", hpChange: 0, scoreChange: 15, nextStep: 5, isCorrect: true }
         ]
     },
 
     // FASA 3: PETANG
     {
-        phase: "Petang",
-        phaseIcon: "🏡",
-        themeClass: "theme-petang",
-        title: "Bermain Basikal (4:00 Petang)",
-        text: "Adam berasa dahaga dan ingin berkumur. Apakah hukum berkumur secara berlebihan?",
+        phase: "PETANG",
+        bgClass: "bg-petang",
+        speaker: "USTAZ",
+        dialogue: "Adam dahaga dan nak berkumur. Apa hukum berkumur berlebihan?",
+        adamSprite: "🚴",
+        npcSprite: "👳",
         options: [
-            { text: "A. Sunat & dapat pahala", feedback: "Salah. Berkumur berlebihan adalah makruh.", hpChange: 0, scoreChange: 0, retry: true },
-            { text: "B. Makruh & boleh membatalkan jika tertelan", feedback: "Betul! Perlu berhati-hati agar tidak berlebihan.", hpChange: 0, scoreChange: 15, nextStep: 6, isCorrect: true }
+            { text: "A. Sunat dan dapat pahala", feedback: "Salah. Berkumur secara berlebihan adalah makruh.", adamAction: "shake", retry: true },
+            { text: "B. Makruh & boleh batal jika tertelan", feedback: "Tepat! Kita perlu berhati-hati bila berkumur.", adamAction: "jump", nextSprite: "🚰", hpChange: 0, scoreChange: 15, nextStep: 6, isCorrect: true }
         ]
     },
     {
-        phase: "Petang",
-        phaseIcon: "🏡",
-        themeClass: "theme-petang",
-        title: "Membantu Ibu",
-        text: "Ibu sedang menyediakan juadah berbuka puasa di dapur.",
+        phase: "PETANG",
+        bgClass: "bg-petang",
+        speaker: "IBU",
+        dialogue: "Adam, boleh tolong ibu sediakan makanan di meja?",
+        adamSprite: "👦",
+        npcSprite: "🧕",
         options: [
-            { text: "📱 Menonton telefon sahaja", feedback: "Adam terlepas amalan membantu ibu bapa.", hpChange: 0, scoreChange: 0, nextStep: 7, isCorrect: false },
-            { text: "🍲 Membantu ibu di dapur", feedback: "Membantu ibu bapa amalan yang sangat mulia!", hpChange: -5, scoreChange: 20, nextStep: 7, isCorrect: true }
+            { text: "A. Main game di telefon", feedback: "Adam terlepas peluang membantu ibu.", adamAction: "shake", nextSprite: "📱", hpChange: 0, scoreChange: 0, nextStep: 7, isCorrect: false },
+            { text: "B. Tolong ibu di dapur", feedback: "Terbaik! Membantu ibu bapa mendapat pahala banyak.", adamAction: "jump", nextSprite: "🍲", hpChange: -5, scoreChange: 20, nextStep: 7, isCorrect: true }
         ]
     },
 
     // FASA 4: BERBUKA
     {
-        phase: "Berbuka",
-        phaseIcon: "🌇",
-        themeClass: "theme-berbuka",
-        title: "Azan Maghrib (7:20 Malam)",
-        text: "Azan Maghrib berkumandang! Adam duduk di meja makan.",
+        phase: "BERBUKA",
+        bgClass: "bg-berbuka",
+        speaker: "AYAH",
+        dialogue: "Azan Maghrib dah berkumandang! Mari berbuka Adam.",
+        adamSprite: "🍽️",
+        npcSprite: "🧔",
         options: [
-            { text: "🍗 Terus makan gelojoh", feedback: "Adam berbuka tetapi terlupa adab berbuka puasa.", hpChange: 0, scoreChange: 5, nextStep: 8, isCorrect: false },
-            { text: "🌴 Baca doa & makan kurma dulu", feedback: "Cemerlang! Adam mengamalkan adab dan sunnah berbuka.", hpChange: 20, scoreChange: 25, nextStep: 8, isCorrect: true }
+            { text: "A. Terus makan gelojoh", feedback: "Adam berbuka, tapi terlupa adab dan sunnah.", adamAction: "shake", hpChange: 0, scoreChange: 5, nextStep: 8, isCorrect: false },
+            { text: "B. Baca doa & makan kurma dulu", feedback: "Syabas! Adam mengamalkan sunnah berbuka.", adamAction: "jump", nextSprite: "🌴", hpChange: 20, scoreChange: 25, nextStep: 8, isCorrect: true }
         ]
     },
     {
-        phase: "Berbuka",
-        phaseIcon: "🌇",
-        themeClass: "theme-berbuka",
-        title: "Selepas Berbuka",
-        text: "Ayah mengajak Adam menunaikan Solat Isyak dan Tarawih.",
+        phase: "BERBUKA",
+        bgClass: "bg-berbuka",
+        speaker: "AYAH",
+        dialogue: "Jom Adam, kita ke masjid untuk Solat Tarawih!",
+        adamSprite: "👦",
+        npcSprite: "🕌",
         options: [
-            { text: "🎮 Terus main video game", feedback: "Adam rugi tidak mengambil peluang solat Tarawih.", hpChange: 0, scoreChange: 0, nextStep: 'END', isCorrect: false },
-            { text: "🕌 Ikut ayah ke masjid", feedback: "Bagus! Solat Tarawih amalan sunat yang sangat digalakkan.", hpChange: 0, scoreChange: 20, nextStep: 'END', isCorrect: true }
+            { text: "A. Nak sambung tengok TV", feedback: "Rugi Adam tak dapat pahala Solat Tarawih.", adamAction: "shake", nextSprite: "📺", hpChange: 0, scoreChange: 0, nextStep: 'END', isCorrect: false },
+            { text: "B. Ikut ayah ke masjid", feedback: "Alhamdulillah! Solat Tarawih menghidupkan malam Ramadan.", adamAction: "jump", nextSprite: "🕌", hpChange: 0, scoreChange: 20, nextStep: 'END', isCorrect: true }
         ]
     }
 ];
@@ -130,49 +143,78 @@ function startGame() {
     document.getElementById('status-bar').classList.remove('hidden');
     document.getElementById('screen-game').classList.remove('hidden');
 
-    loadQuestion();
+    loadStage();
 }
 
-function updateStatus() {
-    // KELAPANGAN HP (0 - 100%)
+function updateHUD() {
     hp = Math.min(Math.max(hp, 0), 100);
     document.getElementById('hp-bar-fill').style.width = hp + '%';
-    document.getElementById('score-display').innerText = score;
+    
+    // Format nombor 4 digit (cth: 0015)
+    document.getElementById('score-display').innerText = String(score).padStart(4, '0');
 
-    const current = gameData[currentStep];
-    document.getElementById('phase-badge').innerText = `${current.phaseIcon} ${current.phase}`;
-
-    // TUKAR WARNA BACKGROUND MENGIKUT FASA
-    document.getElementById('game-body').className = current.themeClass;
+    const current = storyData[currentStep];
+    document.getElementById('phase-badge').innerText = current.phase;
 }
 
-function loadQuestion() {
-    const q = gameData[currentStep];
+function loadStage() {
+    const current = storyData[currentStep];
+    updateHUD();
 
-    updateStatus();
+    // Tukar Background World
+    const stage = document.getElementById('game-stage');
+    stage.className = `stage-world ${current.bgClass}`;
 
-    document.getElementById('story-phase-icon').innerText = q.phaseIcon;
-    document.getElementById('story-title').innerText = q.title;
-    document.getElementById('story-text').innerText = q.text;
+    // Update Dialog Teks
+    document.getElementById('speaker-name').innerText = current.speaker;
+    document.getElementById('story-text').innerText = current.dialogue;
 
+    // Update Sprite Watak
+    const adamElem = document.getElementById('char-adam') || document.getElementById('sprite-adam');
+    const npcElem = document.getElementById('char-npc') || document.getElementById('sprite-npc');
+
+    adamElem.innerText = current.adamSprite;
+    adamElem.className = "sprite adam-sprite bounce";
+
+    if (current.npcSprite) {
+        npcElem.innerText = current.npcSprite;
+        npcElem.classList.remove('hidden');
+    } else {
+        npcElem.classList.add('hidden');
+    }
+
+    // Hide Feedback & Load Command Buttons
     document.getElementById('feedback-box').classList.add('hidden');
+    const optionsGrid = document.getElementById('options-container');
+    optionsGrid.innerHTML = '';
 
-    const optionsContainer = document.getElementById('options-container');
-    optionsContainer.innerHTML = '';
-
-    q.options.forEach((opt) => {
+    current.options.forEach((opt) => {
         const btn = document.createElement('button');
-        btn.className = 'option-card';
+        btn.className = 'command-btn';
         btn.innerText = opt.text;
         btn.onclick = () => handleChoice(opt);
-        optionsContainer.appendChild(btn);
+        optionsGrid.appendChild(btn);
     });
 }
 
 function handleChoice(option) {
+    const adamElem = document.getElementById('sprite-adam');
     const feedbackBox = document.getElementById('feedback-box');
+
+    // Trigger Animasi Sprite
+    if (option.adamAction === 'shake') {
+        adamElem.className = "sprite adam-sprite shake";
+    } else if (option.adamAction === 'jump') {
+        adamElem.className = "sprite adam-sprite jump";
+    }
+
+    if (option.nextSprite) {
+        adamElem.innerText = option.nextSprite;
+    }
+
+    // Feedback
     feedbackBox.innerText = option.feedback;
-    feedbackBox.className = `feedback-card ${option.isCorrect ? 'correct' : 'wrong'}`;
+    feedbackBox.className = `dialog-feedback ${option.isCorrect ? 'correct' : 'wrong'}`;
     feedbackBox.classList.remove('hidden');
 
     if (!option.applied) {
@@ -180,13 +222,12 @@ function handleChoice(option) {
         score += option.scoreChange;
         if (score < 0) score = 0;
 
-        // POP-UP MARKAH TERAPUNG
         if (option.scoreChange !== 0) {
             showFloatingScore(option.scoreChange);
         }
     }
 
-    updateStatus();
+    updateHUD();
 
     if (option.retry) {
         option.applied = true;
@@ -198,25 +239,20 @@ function handleChoice(option) {
             endGame();
         } else {
             currentStep = option.nextStep;
-            loadQuestion();
+            loadStage();
         }
     }, 1600);
 }
 
-// FUNGSI POPUP MARKAH TERAPUNG (+15 Mata!)
 function showFloatingScore(amount) {
     const container = document.getElementById('floating-container');
     const floatEl = document.createElement('div');
-
-    floatEl.className = 'float-text';
+    floatEl.className = 'float-score';
     floatEl.innerText = amount > 0 ? `+${amount}` : `${amount}`;
-    floatEl.style.color = amount > 0 ? '#22c55e' : '#ef4444';
+    floatEl.style.color = amount > 0 ? '#86efac' : '#fca5a5';
 
     container.appendChild(floatEl);
-
-    setTimeout(() => {
-        floatEl.remove();
-    }, 1200);
+    setTimeout(() => floatEl.remove(), 1000);
 }
 
 function endGame() {
@@ -229,28 +265,17 @@ function endGame() {
 
     const badge = document.getElementById('evaluation-badge');
     if (score >= 90) {
-        badge.innerHTML = "🌟 CEMERLANG<br><small>Anda memahami amalan puasa Ramadan dengan sangat baik!</small>";
-        badge.style.backgroundColor = "#dcfce7";
-        badge.style.color = "#166534";
+        badge.innerHTML = "🌟 CEMERLANG<br><small>Sangat memahami amalan Ramadan!</small>";
     } else if (score >= 70) {
-        badge.innerHTML = "👍 BAIK<br><small>Anda memahami kebanyakan amalan puasa.</small>";
-        badge.style.backgroundColor = "#e0f2fe";
-        badge.style.color = "#075985";
-    } else if (score >= 50) {
-        badge.innerHTML = "🙂 MEMUASKAN<br><small>Cuba ulang semula beberapa topik puasa.</small>";
-        badge.style.backgroundColor = "#fef3c7";
-        badge.style.color = "#92400e";
+        badge.innerHTML = "👍 BAIK<br><small>Memahami kebanyakan amalan puasa.</small>";
     } else {
-        badge.innerHTML = "📚 PERLU BIMBINGAN<br><small>Mari belajar semula tentang niat & perkara batal puasa.</small>";
-        badge.style.backgroundColor = "#fee2e2";
-        badge.style.color = "#991b1b";
+        badge.innerHTML = "📚 PERLU BIMBINGAN<br><small>Belajar semula topik puasa.</small>";
     }
 }
 
 function resetGame() {
     document.getElementById('screen-result').classList.add('hidden');
     document.getElementById('screen-start').classList.remove('hidden');
-    document.getElementById('game-body').className = 'theme-sahur';
 }
 
 function showInfo(type) {
@@ -259,11 +284,11 @@ function showInfo(type) {
     const body = document.getElementById('modal-body');
 
     if (type === 'how-to-play') {
-        title.innerText = "📖 Cara Bermain";
-        body.innerHTML = "<p>1. Bantu Adam jalani ibadah puasa sehari penuh.</p><p>2. Buat pilihan yang tepat untuk menjaga Tenaga & menambah Mata Ramadan.</p><p>3. Dapatkan keputusan Cemerlang di akhir hari!</p>";
+        title.innerText = "📖 CARA MAIN";
+        body.innerHTML = "<p>1. Bantu Adam jalani ibadah puasa sehari penuh.</p><p>2. Buat pilihan tepat untuk jaga HP & tambah Score!</p>";
     } else {
-        title.innerText = "🎯 Objektif Pembelajaran";
-        body.innerHTML = "<ul><li>Menyatakan maksud & niat puasa.</li><li>Mengenal pasti perkara membatalkan puasa.</li><li>Mengamalkan adab & amalan sunat puasa.</li></ul>";
+        title.innerText = "🎯 OBJEKTIF";
+        body.innerHTML = "<p>Menyatakan maksud, niat, perkara membatalkan puasa dan amalan sunat Ramadan.</p>";
     }
     modal.classList.remove('hidden');
 }
@@ -275,26 +300,3 @@ function closeInfo() {
 function toggleNotes() {
     document.getElementById('notes-modal').classList.toggle('hidden');
 }
-// FUNGSI CIPTA ZARAH BACKGROUND SECARA AUTOMATIK
-function createParticles() {
-    const container = document.getElementById('particles-container');
-    if (!container) return;
-    
-    // Cipta 15 zarah bulat bergerak
-    for (let i = 0; i < 15; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const size = Math.random() * 12 + 6; // Saiz 6px - 18px
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDuration = `${Math.random() * 4 + 4}s`; // Masa 4s - 8s
-        particle.style.animationDelay = `${Math.random() * 5}s`;
-        
-        container.appendChild(particle);
-    }
-}
-
-// Jalankan sistem zarah sebaik sahaja laman di-load
-window.addEventListener('DOMContentLoaded', createParticles);
