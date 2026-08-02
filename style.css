@@ -1,311 +1,289 @@
-/* METRIK FONTS & WARNA UTAMA */
 :root {
-    --font-game: 'Press Start 2P', monospace;
-    --font-ui: 'Fredoka', sans-serif;
-    --primary-color: #ffca28;
-    --card-bg: rgba(255, 255, 255, 0.95);
-    --text-color: #2c3e50;
+    --font-pixel: 'Press Start 2P', monospace;
+    --font-retro: 'VT323', monospace;
+    --jrpg-bg: #030712;
+    --jrpg-border: #f3f4f6;
+    --gold: #fbbf24;
+    --cyan: #38bdf8;
+    --red: #ef4444;
+    --green: #22c55e;
 }
 
-/* TEMA WARNA DINAMIK MENGIKUT FASA */
-body.theme-sahur   { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); } /* Biru Malam / Sahur */
-body.theme-sekolah { background: linear-gradient(135deg, #2980b9, #6dd5fa, #ffffff); } /* Biru Siang Terang */
-body.theme-petang  { background: linear-gradient(135deg, #f857a6, #ff5858); }          /* Oren / Jingga Petang */
-body.theme-berbuka { background: linear-gradient(135deg, #4a00e0, #8e2de2); }          /* Ungu Senja Maghrib */
-
 body {
-    font-family: var(--font-ui);
-    color: var(--text-color);
+    background-color: #0f172a;
     margin: 0;
-    padding: 15px;
+    padding: 0;
+    font-family: var(--font-pixel);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    transition: background 0.8s ease;
-    box-sizing: border-box;
+    color: #ffffff;
+    user-select: none;
 }
 
-.game-container {
-    background-color: var(--card-bg);
+/* BINGKAI KONSOL ARCADE (16:9 Aspect Ratio) */
+.arcade-cabinet {
     width: 100%;
-    max-width: 480px;
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-    padding: 20px;
+    max-width: 520px;
+    background: #1e293b;
+    border: 8px solid #334155;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0,0,0,0.5);
+    padding: 12px;
     box-sizing: border-box;
-    position: relative;
-    border: 4px solid #ffffff;
 }
 
-/* BAR STATUS GAME */
+.arcade-screen {
+    position: relative;
+    background-color: var(--jrpg-bg);
+    border: 4px solid #000;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* CRT SCANLINE EFFECT (GAYA TV RETRO) */
+.crt-scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* HUD / STATUS BAR ATAS */
 #status-bar {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px;
+    background: rgba(3, 7, 18, 0.85);
+    border: 2px solid var(--jrpg-border);
+    border-radius: 8px;
+    padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #111827;
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    z-index: 5;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.5);
 }
 
-.stat-group { display: flex; flex-direction: column; gap: 4px; }
-.stat-label { font-size: 0.7em; font-weight: 700; color: #9ca3af; text-transform: uppercase; }
+.hud-item { display: flex; align-items: center; gap: 8px; }
+.hud-label { font-size: 0.6em; color: var(--gold); }
+.hud-value { font-size: 0.75em; color: #fff; }
 
-/* HP BAR VISUAL */
 .hp-bar-bg {
-    width: 110px;
-    height: 16px;
-    background-color: #374151;
-    border-radius: 10px;
+    width: 80px; height: 12px;
+    background: #374151;
+    border: 2px solid #fff;
+    border-radius: 4px;
     overflow: hidden;
-    border: 2px solid #4b5563;
 }
 
 .hp-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ef4444, #10b981);
-    transition: width 0.4s ease-in-out;
-    border-radius: 8px;
+    background: linear-gradient(90deg, var(--red), var(--green));
+    transition: width 0.3s ease;
 }
 
-.score-badge { font-family: var(--font-game); color: #f59e0b; font-size: 0.85em; }
-.phase-badge { font-weight: 700; font-size: 0.85em; color: #38bdf8; }
-
-/* LOGO & SKRIN UTAMA */
-.screen { text-align: center; }
-.logo-box { margin-bottom: 25px; }
-.logo-icon { font-size: 60px; animation: pulse 2s infinite; }
-
-.game-title {
-    font-family: var(--font-game);
-    font-size: 1.1em;
-    color: #1e293b;
-    line-height: 1.5;
-    margin: 10px 0;
-    text-shadow: 2px 2px 0px #cbd5e1;
-}
-
-.subtitle { font-weight: 600; color: #64748b; margin: 0; }
-
-/* BUTTONS BUTTON 3D STYLE */
-.button-group { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-
-.game-btn {
-    font-family: var(--font-ui);
-    font-weight: 700;
-    font-size: 1em;
-    padding: 14px;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
-}
-
-.btn-start {
-    background-color: #22c55e;
-    color: #ffffff;
-    box-shadow: 0 6px 0 #15803d;
-}
-
-.btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #15803d; }
-
-.btn-sub {
-    background-color: #0ea5e9;
-    color: #ffffff;
-    box-shadow: 0 5px 0 #0369a1;
-}
-
-.btn-sub:active { transform: translateY(3px); box-shadow: 0 2px 0 #0369a1; }
-
-.btn-close {
-    background-color: #ef4444;
-    color: white;
-    box-shadow: 0 4px 0 #b91c1c;
-    width: 100%;
-    margin-top: 15px;
-}
-
-/* KAD SITUASI & OPTIONS */
-.story-card {
-    background: #f8fafc;
-    border: 3px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 16px;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
-}
-
-.card-header { display: flex; align-items: center; gap: 8px; font-size: 1.2em; color: #0f172a; }
-.card-header h2 { margin: 0; font-size: 0.9em; font-family: var(--font-game); }
-
-#story-text { font-size: 1.05em; line-height: 1.5; color: #334155; margin-top: 10px; font-weight: 600; }
-
-.options-grid { display: flex; flex-direction: column; gap: 10px; }
-
-.option-card {
-    background: #ffffff;
-    border: 2px solid #cbd5e1;
-    border-radius: 16px;
-    padding: 14px 16px;
-    text-align: left;
-    font-weight: 700;
-    font-size: 0.95em;
-    color: #1e293b;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #cbd5e1;
-    transition: all 0.15s ease;
-}
-
-.option-card:hover { border-color: #3b82f6; background-color: #eff6ff; }
-.option-card:active { transform: translateY(3px); box-shadow: 0 1px 0 #3b82f6; }
-
-/* FEEDBACK CARD */
-.feedback-card {
-    padding: 12px 16px;
-    border-radius: 14px;
-    font-weight: 700;
-    font-size: 0.9em;
-    text-align: left;
-    margin-bottom: 12px;
-}
-.feedback-card.correct { background-color: #dcfce7; color: #166534; border: 2px solid #86efac; }
-.feedback-card.wrong { background-color: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
-
-/* POPUP MARKAH TERAPUNG (FLOATING SCORE) */
-#floating-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    pointer-events: none;
-    z-index: 99;
-}
-
-.float-text {
-    font-family: var(--font-game);
-    font-size: 1em;
+.phase-tag {
+    font-size: 0.6em;
+    background: var(--cyan);
+    color: #000;
+    padding: 3px 6px;
+    border-radius: 4px;
     font-weight: bold;
-    animation: floatUp 1.2s forwards ease-out;
-    text-shadow: 2px 2px 0px #000;
 }
 
-@keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0) scale(0.8); }
-    50% { opacity: 1; transform: translateY(-20px) scale(1.2); }
-    100% { opacity: 0; transform: translateY(-40px) scale(1); }
+/* STAGE WORLD (DUNIA GAMBARAN LANGSUNG) */
+.stage-world {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding-bottom: 25px;
+    transition: background 0.5s ease;
+    border-bottom: 4px solid #000;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+/* TEMA DYNAMIC BACKGROUND FASA */
+.bg-sahur   { background: linear-gradient(to bottom, #090d16, #1e1b4b, #311b92); }
+.bg-sekolah { background: linear-gradient(to bottom, #0284c7, #38bdf8, #bae6fd); }
+.bg-petang  { background: linear-gradient(to bottom, #c2410c, #ea580c, #fed7aa); }
+.bg-berbuka { background: linear-gradient(to bottom, #4c1d95, #6b21a8, #a855f7); }
+
+/* SPRITE WATAK */
+.sprite {
+    font-size: 70px;
+    filter: drop-shadow(0 8px 0 rgba(0,0,0,0.4));
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
 }
 
-/* MODAL & RESULT */
+.bounce { animation: spriteBounce 1.2s infinite; }
+.shake { animation: spriteShake 0.4s; }
+.jump { transform: translateY(-35px); }
+
+@keyframes spriteBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes spriteShake {
+    0%, 100% { transform: translateX(0); }
+    25%, 75% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+}
+
+/* DIALOGUE BOX JRPG (PINTAS BAWAH SKRIN) */
+.jrpg-dialog-box {
+    background: rgba(3, 7, 18, 0.92);
+    border: 4px solid var(--jrpg-border);
+    border-radius: 10px;
+    margin: 8px;
+    padding: 12px;
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 4px 0 #000;
+    position: relative;
+    z-index: 5;
+}
+
+.speaker-tag {
+    background: var(--gold);
+    color: #000;
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 0.65em;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.dialog-content {
+    font-family: var(--font-retro);
+    font-size: 1.45em;
+    line-height: 1.25;
+    color: #f3f4f6;
+    min-height: 52px;
+}
+
+/* COMMAND GRID (PILIHAN JAWAPAN STYLES JRPG) */
+.command-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.command-btn {
+    background: #111827;
+    border: 2px solid #4b5563;
+    color: #fff;
+    font-family: var(--font-retro);
+    font-size: 1.35em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+}
+
+.command-btn:before {
+    content: "▶ ";
+    color: transparent;
+    margin-right: 6px;
+}
+
+.command-btn:hover {
+    border-color: var(--gold);
+    background: #1f2937;
+    color: var(--gold);
+}
+
+.command-btn:hover:before { color: var(--gold); }
+.command-btn:active { transform: scale(0.98); }
+
+/* FEEDBACK */
+.dialog-feedback {
+    font-family: var(--font-retro);
+    font-size: 1.3em;
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+.dialog-feedback.correct { background: rgba(34, 197, 94, 0.2); border: 2px solid var(--green); color: #86efac; }
+.dialog-feedback.wrong { background: rgba(239, 68, 68, 0.2); border: 2px solid var(--red); color: #fca5a5; }
+
+/* SKRIN START & RESULT */
+.screen-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.start-banner { text-align: center; margin-bottom: 25px; }
+.pixel-icon { font-size: 60px; animation: spriteBounce 2s infinite; }
+.game-title { font-size: 0.9em; line-height: 1.6; color: var(--gold); text-shadow: 3px 3px 0 #000; }
+.game-subtitle { font-size: 0.55em; color: var(--cyan); margin-top: 8px; }
+
+.start-menu { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px; }
+
+.jrpg-btn {
+    font-family: var(--font-pixel);
+    font-size: 0.65em;
+    padding: 12px;
+    background: #1f2937;
+    border: 3px solid var(--jrpg-border);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 4px 0 #000;
+}
+.jrpg-btn.primary { background: #15803d; border-color: #86efac; }
+.jrpg-btn:active { transform: translateY(3px); box-shadow: none; }
+.btn-small { margin-top: 10px; width: 100%; font-size: 0.55em; }
+
+/* MODAL & POPUP */
 .modal {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(0,0,0,0.85);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 15px;
-    border-radius: 20px;
+    z-index: 20;
 }
 
-.modal-card {
-    background: white;
-    padding: 20px;
-    border-radius: 18px;
-    max-height: 80vh;
-    overflow-y: auto;
-    text-align: left;
+.modal-box { max-height: 80%; overflow-y: auto; text-align: left; }
+.notes-text { font-size: 1.1em; }
+
+/* FLOATING SCORE POPUP */
+#floating-container {
+    position: absolute;
+    top: 60px; right: 20px;
+    pointer-events: none;
+    z-index: 30;
 }
 
-.result-card {
-    background: #fef3c7;
-    border: 3px dashed #f59e0b;
-    border-radius: 18px;
-    padding: 15px;
-    margin: 20px 0;
+.float-score {
+    font-family: var(--font-pixel);
+    font-size: 0.8em;
+    animation: floatAnim 1s forwards ease-out;
+    text-shadow: 2px 2px 0 #000;
 }
 
-.eval-badge {
-    font-weight: 700;
-    padding: 10px;
-    border-radius: 12px;
-    margin-top: 10px;
+@keyframes floatAnim {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-30px); }
 }
 
 .hidden { display: none !important; }
-/* 1. ZARAH BACKGROUND TERAPUNG (FLOATING PARTICLES) */
-#particles-container {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-
-.particle {
-    position: absolute;
-    bottom: -20px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    animation: rise 6s infinite linear;
-}
-
-@keyframes rise {
-    0% { transform: translateY(0) scale(0.8); opacity: 0; }
-    50% { opacity: 0.8; }
-    100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
-}
-
-/* 2. GLOW & SHADOW PADA CONTAINER & KAD */
-.game-container {
-    z-index: 1; /* Supaya berada di atas zarah */
-    border: 4px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2), 0 15px 35px rgba(0, 0, 0, 0.5) !important;
-}
-
-.story-card {
-    background: linear-gradient(135deg, #ffffff, #f1f5f9) !important;
-    border: 3px solid #64748b !important;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
-    position: relative;
-    overflow: hidden;
-}
-
-/* 3. BUTTONS DENGAN EFEK KONSELE 3D REALISTIK */
-.option-card {
-    position: relative;
-    background: linear-gradient(180deg, #ffffff, #f8fafc) !important;
-    border: 3px solid #94a3b8 !important;
-    box-shadow: 0 6px 0 #64748b, 0 10px 15px rgba(0,0,0,0.1) !important;
-    transition: all 0.1s ease !important;
-}
-
-.option-card:hover {
-    border-color: #0284c7 !important;
-    background: #f0f9ff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 0 #0284c7, 0 12px 20px rgba(2, 132, 199, 0.2) !important;
-}
-
-.option-card:active {
-    transform: translateY(4px) !important;
-    box-shadow: 0 2px 0 #0284c7 !important;
-}
-
-/* 4. ANIMASI MAKLUM BALAS MEMBALAS (BURST EFFECT) */
-.feedback-card.correct {
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-}
-
-@keyframes popIn {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
+.text-gold { color: var(--gold); }
