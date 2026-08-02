@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misi Ramadan Adam – Sehari Berpuasa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- BAR STATUS GAME -->
+        <header id="status-bar" class="hidden">
+            <div class="stat-box">❤️ Tenaga: <span id="hp">100</span></div>
+            <div class="stat-box">🌙 Mata Ramadan: <span id="score">0</span></div>
+            <div class="stat-box">⏰ Fasa: <span id="phase">Sahur</span></div>
+        </header>
+
+        <!-- SKRIN UTAMA (START) -->
+        <section id="screen-start" class="screen">
+            <h1>🌙 Misi Ramadan Adam</h1>
+            <p class="subtitle">Sehari Berpuasa dengan Betul</p>
+            
+            <div class="button-group">
+                <button onclick="startGame()" class="btn btn-primary">▶️ Mula Permainan</button>
+                <button onclick="showInfo('how-to-play')" class="btn btn-secondary">📖 Cara Bermain</button>
+                <button onclick="showInfo('objectives')" class="btn btn-secondary">🎯 Objektif Pembelajaran</button>
+            </div>
+
+            <!-- MODAL INFO (CARA MAIN / OBJEKTIF) -->
+            <div id="info-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h2 id="modal-title"></h2>
+                    <div id="modal-body"></div>
+                    <button onclick="closeInfo()" class="btn btn-primary">Tutup</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKRIN PERMAINAN (SOALAN & SITUASI) -->
+        <section id="screen-game" class="screen hidden">
+            <div class="story-box">
+                <h2 id="story-title">Situasi</h2>
+                <p id="story-text">Teks situasi akan muncul di sini...</p>
+            </div>
+
+            <div id="feedback-box" class="feedback hidden"></div>
+
+            <div id="options-container" class="options-grid">
+                <!-- Butang pilihan akan di-generate oleh JS -->
+            </div>
+        </section>
+
+        <!-- SKRIN KEPUTUSAN AKHIR -->
+        <section id="screen-result" class="screen hidden">
+            <h1>🏆 Permainan Tamat!</h1>
+            <p>Tahniah! Adam berjaya menamatkan satu hari Ramadan.</p>
+
+            <div class="score-card">
+                <h3>Ringkasan</h3>
+                <p>❤️ Tenaga Akhir : <strong id="final-hp">0</strong></p>
+                <p>🌙 Mata Ramadan : <strong id="final-score">0</strong></p>
+                <hr>
+                <div id="evaluation-badge" class="badge"></div>
+            </div>
+
+            <div class="button-group">
+                <button onclick="resetGame()" class="btn btn-primary">🔄 Main Semula</button>
+                <button onclick="toggleNotes()" class="btn btn-secondary">📖 Lihat Nota Puasa</button>
+            </div>
+
+            <!-- MODAL NOTA PUASA -->
+            <div id="notes-modal" class="modal hidden">
+                <div class="modal-content notes-content">
+                    <h2>📌 Nota Ringkas Puasa Ramadan</h2>
+                    
+                    <h3>Maksud Puasa</h3>
+                    <p>Menahan diri daripada makan, minum dan perkara yang membatalkan puasa bermula dari terbit fajar hingga terbenam matahari disertai niat.</p>
+                    
+                    <h3>Perkara Membatalkan Puasa</h3>
+                    <ul>
+                        <li>Makan dan minum dengan sengaja</li>
+                        <li>Muntah dengan sengaja</li>
+                        <li>Datang haid atau nifas</li>
+                        <li>Memasukkan sesuatu ke rongga terbuka dengan sengaja</li>
+                    </ul>
+
+                    <h3>Amalan Sunat</h3>
+                    <ul>
+                        <li>Bersahur & menyegerakan berbuka</li>
+                        <li>Berbuka dengan kurma</li>
+                        <li>Membaca Al-Quran & Solat Tarawih</li>
+                    </ul>
+                    <button onclick="toggleNotes()" class="btn btn-primary">Tutup Nota</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
