@@ -1,128 +1,901 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Misi Ramadan Adam - Retro JRPG</title>
-    <!-- Font Pixel & Retro Arcade -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Ramadan Bersama Adam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --cream:#FFF9F2;
+    --card:#FFFFFF;
+    --peach:#FFC6B3;
+    --peach-dark:#FF8A65;
+    --mint:#BDEBD3;
+    --mint-dark:#52B788;
+    --sky:#C7E7FB;
+    --sky-dark:#4EA8DE;
+    --lavender:#E3D6FA;
+    --lavender-dark:#9D4EDD;
+    --sun:#FFE59A;
+    --sun-dark:#FFB703;
+    --coral:#FFB3A7;
+    --coral-dark:#E05638;
+    --ink:#3D348B;
+    --ink-dark:#2B2D42;
+    --ink-soft:#7678ED;
+    --white:#ffffff;
+    --font-display:'Baloo 2', cursive, sans-serif;
+    --font-body:'Nunito', sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+    margin:0; padding:16px;
+    min-height:100vh;
+    display:flex; justify-content:center; align-items:center;
+    background: radial-gradient(circle at 50% 20%, #1D1E4D 0%, #0F1026 100%);
+    font-family:var(--font-body);
+    color:var(--ink-dark);
+    user-select:none;
+}
+
+/* ===== BINGKAI PERANTI (Tablet/Storybook Frame) ===== */
+.arcade-cabinet{
+    width:100%; max-width:440px;
+    background: linear-gradient(145deg, #FFFFFF, #F0E6FF);
+    border-radius:36px;
+    padding:14px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,255,255,0.8), 0 0 30px rgba(255, 215, 0, 0.2);
+}
+.arcade-screen{
+    position:relative;
+    background:var(--cream);
+    border-radius:26px;
+    overflow:hidden;
+    height:660px;
+    display:flex; flex-direction:column;
+    border:3px solid #E2D4F8;
+}
+
+/* ===== HUD ===== */
+#status-bar{
+    position:absolute; top:12px; left:12px; right:12px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-radius:20px;
+    padding:8px 14px;
+    display:flex; justify-content:space-between; align-items:center;
+    z-index:10;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.8);
+}
+.hud-item{display:flex; align-items:center; gap:8px;}
+.hud-label{font-family:var(--font-display); font-size:0.7em; color:var(--peach-dark); font-weight:800;}
+.hud-value{font-family:var(--font-display); font-size:0.9em; color:var(--ink); font-weight:800;}
+.sound-toggle-btn{
+    background:var(--sun); border:none; border-radius:50%;
+    width:32px; height:32px; font-size:1em; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 3px 0 var(--sun-dark);
+    transition:transform 0.1s;
+}
+.sound-toggle-btn:active{transform:translateY(2px); box-shadow:none;}
+.hp-bar-bg{
+    width:80px; height:14px; background:#EAE2F8; border-radius:20px; overflow:hidden;
+    box-shadow:inset 0 1px 3px rgba(0,0,0,0.12);
+}
+.hp-bar-fill{
+    height:100%;
+    background:linear-gradient(90deg, #FF70A6, #70E488);
+    border-radius:20px;
+    transition:width 0.4s ease;
+}
+.phase-tag{
+    font-family:var(--font-display); font-weight:800;
+    font-size:0.7em;
+    background:var(--sky); color:#1D5C8A;
+    padding:4px 12px; border-radius:14px;
+    letter-spacing:0.5px;
+}
+
+/* ===== DUNIA / STAGE & LATAR BELAKANG ELEGAN ===== */
+.stage-world{
+    flex:1; position:relative;
+    display:flex; justify-content:space-around; align-items:flex-end;
+    padding-bottom:20px;
+    transition:background 0.8s ease;
+    overflow:hidden;
+}
+
+/* SCENE BACKDROP DESIGNS */
+/* 1. SAHUR SCENE */
+.bg-sahur{ background: linear-gradient(to bottom, #1E1B4B, #312E81 50%, #4C1D95); }
+.bg-sahur .scene-decor{
+    position:absolute; inset:0; pointer-events:none;
+}
+.bg-sahur .moon{
+    position:absolute; top:25px; right:35px; font-size:38px;
+    filter:drop-shadow(0 0 12px rgba(255, 240, 180, 0.8));
+    animation: moonFloat 3s ease-in-out infinite alternate;
+}
+.bg-sahur .stars{
+    position:absolute; top:15px; left:20px; font-size:16px; opacity:0.8;
+    animation: starBlink 2s infinite alternate;
+}
+.bg-sahur .house-silhouette{
+    position:absolute; bottom:0; left:0; right:0; height:70px;
+    background: radial-gradient(circle at 30% 20%, #FDE047 5px, transparent 6px),
+                radial-gradient(circle at 75% 30%, #FDE047 4px, transparent 5px);
+    background-color: #0F172A;
+    clip-path: polygon(0% 100%, 0% 60%, 15% 35%, 30% 60%, 45% 40%, 65% 70%, 80% 45%, 100% 70%, 100% 100%);
+}
+
+/* 2. KELAS / SEKOLAH SCENE */
+.bg-sekolah{ background: linear-gradient(to bottom, #7DD3FC, #BAE6FD 60%, #E0F2FE); }
+.bg-sekolah .scene-decor{ position:absolute; inset:0; pointer-events:none; }
+.bg-sekolah .blackboard{
+    position:absolute; top:50px; left:50%; transform:translateX(-50%);
+    width:82%; height:110px; background:#064E3B;
+    border:6px solid #B45309; border-radius:12px;
+    box-shadow:0 8px 16px rgba(0,0,0,0.15);
+    display:flex; justify-content:center; align-items:center;
+    color:#ECFDF5; font-family:var(--font-display); font-size:1em;
+    text-shadow:1px 1px 2px rgba(0,0,0,0.5); opacity:0.9;
+}
+.bg-sekolah .school-floor{
+    position:absolute; bottom:0; left:0; right:0; height:45px;
+    background:#D97706; opacity:0.3;
+    border-top:4px solid #B45309;
+}
+
+/* 3. PETANG SCENE */
+.bg-petang{ background: linear-gradient(to bottom, #FB923C, #FDBA74 55%, #FED7AA); }
+.bg-petang .scene-decor{ position:absolute; inset:0; pointer-events:none; }
+.bg-petang .sun-setting{
+    position:absolute; top:60px; left:50%; transform:translateX(-50%);
+    width:70px; height:70px; background:#FEF08A; border-radius:50%;
+    box-shadow:0 0 35px #FDE047;
+}
+.bg-petang .mosque-silhouette{
+    position:absolute; bottom:0; left:0; right:0; height:65px;
+    background:#451A03;
+    clip-path: polygon(0 100%, 0 60%, 10% 60%, 15% 30%, 20% 60%, 35% 60%, 40% 10%, 45% 10%, 50% 60%, 65% 60%, 70% 35%, 75% 60%, 100% 60%, 100% 100%);
+    opacity:0.85;
+}
+
+/* 4. BERBUKA SCENE */
+.bg-berbuka{ background: linear-gradient(to bottom, #818CF8, #C084FC 50%, #F472B6); }
+.bg-berbuka .scene-decor{ position:absolute; inset:0; pointer-events:none; }
+.bg-berbuka .lanterns{
+    position:absolute; top:10px; left:15%; right:15%;
+    display:flex; justify-content:space-around; font-size:28px;
+    filter:drop-shadow(0 4px 8px rgba(255,230,150,0.6));
+}
+.bg-berbuka .dining-table{
+    position:absolute; bottom:0; left:10%; right:10%; height:40px;
+    background:#78350F; border-radius:12px 12px 0 0;
+    box-shadow:0 -4px 10px rgba(0,0,0,0.2);
+    display:flex; justify-content:center; align-items:center; font-size:22px; gap:20px;
+}
+
+/* 5. MALAM SCENE */
+.bg-malam{ background: linear-gradient(to bottom, #0F172A, #1E1B4B 60%, #312E81); }
+.bg-malam .scene-decor{ position:absolute; inset:0; pointer-events:none; }
+.bg-malam .full-moon{
+    position:absolute; top:25px; left:30px; font-size:42px;
+    filter:drop-shadow(0 0 20px rgba(255,255,255,0.9));
+}
+.bg-malam .glowing-mosque{
+    position:absolute; bottom:0; left:0; right:0; height:80px;
+    background:#1E293B;
+    clip-path: polygon(0 100%, 0 50%, 20% 50%, 25% 15%, 30% 50%, 40% 50%, 50% 10%, 60% 50%, 75% 50%, 80% 20%, 85% 50%, 100% 50%, 100% 100%);
+}
+
+@keyframes moonFloat{ 0%{transform:translateY(0);} 100%{transform:translateY(-8px);} }
+@keyframes starBlink{ 0%{opacity:0.3;} 100%{opacity:1;} }
+
+/* SPRITES */
+.sprite{
+    font-size:62px;
+    filter:drop-shadow(0 8px 10px rgba(0,0,0,0.3));
+    transition:transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index:5;
+}
+.bounce{ animation:spriteBounce 1.6s ease-in-out infinite; }
+.shake{ animation:spriteShake 0.4s; }
+@keyframes spriteBounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+@keyframes spriteShake{ 0%,100%{transform:translateX(0);} 25%,75%{transform:translateX(-10px);} 50%{transform:translateX(10px);} }
+
+/* ===== DIALOG BOX ===== */
+.jrpg-dialog-box{
+    background:rgba(255,255,255,0.96);
+    backdrop-filter:blur(6px);
+    border-radius:24px;
+    margin:10px;
+    padding:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    position:relative; z-index:10;
+    border:2px solid #F0E6FF;
+}
+.speaker-tag{
+    background:var(--sun);
+    color:#7A4300;
+    display:inline-block;
+    padding:4px 14px;
+    font-family:var(--font-display); font-weight:800;
+    font-size:0.75em;
+    border-radius:14px;
+    margin-bottom:8px;
+    box-shadow:0 2px 0 var(--sun-dark);
+}
+.dialog-content{
+    font-family:var(--font-body); font-weight:700;
+    font-size:1.05em;
+    line-height:1.4;
+    color:var(--ink-dark);
+    min-height:42px;
+}
+
+/* ===== PILIHAN / BUTANG COMMAND ===== */
+.command-grid{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+.command-btn{
+    background:#FAF7FF;
+    border:2px solid #E2D4F8;
+    color:var(--ink-dark);
+    font-family:var(--font-body); font-weight:700;
+    font-size:0.92em;
+    padding:11px 14px;
+    border-radius:16px;
+    text-align:left;
+    cursor:pointer;
+    transition:all 0.15s ease;
+    box-shadow:0 3px 0 #D8C5F2;
+}
+.command-btn:hover:not(:disabled){
+    border-color:var(--lavender-dark);
+    background:#F3E8FF;
+    transform:translateY(-2px);
+    box-shadow:0 5px 0 #C7ACEE;
+}
+.command-btn:active:not(:disabled){ transform:translateY(2px); box-shadow:0 1px 0 #C7ACEE; }
+.command-btn:disabled{ opacity:0.5; cursor:not-allowed; }
+
+/* ===== MAKLUM BALAS ===== */
+.dialog-feedback{
+    font-family:var(--font-body); font-weight:700;
+    font-size:0.95em;
+    padding:10px 14px;
+    border-radius:16px;
+    margin-top:10px;
+    line-height:1.35;
+}
+.dialog-feedback.correct{ background:#E6F9F0; border:2px solid var(--mint-dark); color:#1B6A41; }
+.dialog-feedback.wrong{ background:#FFEBE8; border:2px solid var(--coral-dark); color:#B92B10; }
+
+/* ===== SKRIN MENU UTAMA (START SCREEN) ENHANCED ===== */
+#screen-start{
+    background: linear-gradient(160deg, #1E1B4B 0%, #2E1065 50%, #4C1D95 100%);
+    color:#FFFFFF;
+    position:relative;
+    overflow:hidden;
+}
+/* Islamic Decorative Elements on Menu */
+.menu-bg-decor{ position:absolute; inset:0; pointer-events:none; }
+.menu-moon{
+    position:absolute; top:20px; right:30px; font-size:55px;
+    filter:drop-shadow(0 0 20px rgba(255,220,130,0.8));
+    animation: moonFloat 3s ease-in-out infinite alternate;
+}
+.menu-lantern-left{
+    position:absolute; top:-10px; left:25px; font-size:32px;
+    animation: lanternSwing 3.5s ease-in-out infinite alternate;
+    transform-origin:top center;
+}
+.menu-lantern-right{
+    position:absolute; top:15px; left:70px; font-size:24px;
+    animation: lanternSwing 2.8s ease-in-out infinite alternate-reverse;
+    transform-origin:top center;
+}
+@keyframes lanternSwing{ 0%{transform:rotate(-6deg);} 100%{transform:rotate(6deg);} }
+
+.menu-mosque-bottom{
+    position:absolute; bottom:0; left:0; right:0; height:90px;
+    background:rgba(15, 23, 42, 0.7);
+    clip-path: polygon(0 100%, 0 50%, 15% 50%, 20% 20%, 25% 50%, 35% 50%, 45% 15%, 50% 5%, 55% 15%, 65% 50%, 75% 50%, 80% 20%, 85% 50%, 100% 50%, 100% 100%);
+}
+
+.start-card{
+    background:rgba(255, 255, 255, 0.12);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255, 255, 255, 0.25);
+    border-radius:28px;
+    padding:24px 20px;
+    width:100%; max-width:320px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.3);
+    z-index:5;
+}
+.start-banner{ margin-bottom:20px; }
+.pixel-icon{ font-size:56px; animation:spriteBounce 2.2s ease-in-out infinite; }
+.game-title{
+    font-family:var(--font-display); font-weight:800;
+    font-size:1.6em; line-height:1.25;
+    color:#FFD166;
+    text-shadow:0 2px 8px rgba(0,0,0,0.4);
+    margin:10px 0 4px;
+}
+.game-subtitle{
+    font-family:var(--font-display); font-weight:600;
+    font-size:0.85em; color:#E0E7FF;
+    letter-spacing:1px;
+}
+.start-menu{ display:flex; flex-direction:column; gap:12px; width:100%; }
+
+.jrpg-btn{
+    font-family:var(--font-display); font-weight:800;
+    font-size:1em;
+    padding:13px;
+    background:var(--sky);
+    border:none;
+    color:#134E4A;
+    cursor:pointer;
+    border-radius:18px;
+    box-shadow:0 5px 0 var(--sky-dark);
+    transition:all 0.1s ease;
+}
+.jrpg-btn.primary{ background:#52B788; color:#FFFFFF; box-shadow:0 5px 0 #2D6A4F; }
+.jrpg-btn:active{ transform:translateY(4px); box-shadow:none; }
+.btn-small{ margin-top:12px; width:100%; font-size:0.85em; }
+
+/* ===== SKRIN VIEW ===== */
+.screen-view{
+    height:100%; display:flex; flex-direction:column;
+    justify-content:center; align-items:center;
+    padding:20px; text-align:center;
+}
+
+.result-header{
+    font-family:var(--font-display); font-weight:800;
+    font-size:1.4em; color:var(--peach-dark); margin-bottom:14px;
+}
+.result-stats{ font-family:var(--font-body); font-weight:700; font-size:1.15em; margin-bottom:10px; color:var(--ink-dark); }
+
+/* ===== MODAL ===== */
+.modal{
+    position:absolute; top:0; left:0; right:0; bottom:0;
+    background:rgba(15, 23, 42, 0.65);
+    backdrop-filter:blur(4px);
+    display:flex; justify-content:center; align-items:center;
+    padding:18px; z-index:30;
+}
+.modal-box{ max-height:85%; overflow-y:auto; text-align:left; background:#FFFFFF; }
+.notes-text{ font-size:0.95em; line-height:1.5; color:var(--ink-dark); }
+.notes-text strong{ color:var(--peach-dark); }
+
+/* ===== FLOATING SCORE ===== */
+#floating-container{ position:absolute; top:60px; right:24px; pointer-events:none; z-index:40; }
+.float-score{
+    font-family:var(--font-display); font-weight:800;
+    font-size:1.2em;
+    animation:floatAnim 1s forwards ease-out;
+}
+@keyframes floatAnim{ 0%{opacity:1; transform:translateY(0);} 100%{opacity:0; transform:translateY(-30px);} }
+
+.result-badge{ margin-top:10px; font-family:var(--font-body); font-weight:700; font-size:1em; line-height:1.4; color:var(--ink-dark); }
+.result-actions{ display:flex; flex-direction:column; gap:10px; margin-top:16px; width:100%; max-width:250px; }
+
+.hidden{ display:none !important; }
+.text-gold{ color:#D97706; font-weight:800; }
+</style>
 </head>
 <body>
 
-    <!-- BINGKAI KONSOL ARCADE -->
-    <div class="arcade-cabinet">
-        <div class="arcade-screen">
-            
-            <!-- OVERLAY CRT SCANLINE & CONTAINER POPUP MARKAH -->
-            <div class="crt-scanline"></div>
-            <div id="floating-container"></div>
+<div class="arcade-cabinet">
+    <div class="arcade-screen">
+        <div id="floating-container"></div>
 
-            <!-- BAR STATUS ATAS (HUD) -->
-            <header id="status-bar" class="hidden">
-                <div class="hud-item">
-                    <span class="hud-label">HP</span>
-                    <div class="hp-bar-bg">
-                        <div id="hp-bar-fill" class="hp-bar-fill" style="width: 100%;"></div>
-                    </div>
-                </div>
-                <div class="hud-item">
-                    <span class="hud-label">SCORE</span>
-                    <span id="score-display" class="hud-value">0000</span>
-                </div>
-                <div class="hud-item">
-                    <button id="sound-btn" onclick="toggleAudio()" class="sound-toggle-btn">🔊</button>
-                    <span id="phase-badge" class="phase-tag">SAHUR</span>
-                </div>
-            </header>
+        <header id="status-bar" class="hidden">
+            <div class="hud-item">
+                <span class="hud-label">TENAGA</span>
+                <div class="hp-bar-bg"><div id="hp-bar-fill" class="hp-bar-fill" style="width: 100%;"></div></div>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">SKOR</span>
+                <span id="score-display" class="hud-value">0000</span>
+            </div>
+            <div class="hud-item">
+                <button id="sound-btn" onclick="toggleAudio()" class="sound-toggle-btn">🔊</button>
+                <span id="phase-badge" class="phase-tag">SAHUR</span>
+            </div>
+        </header>
 
-            <!-- SKRIN MULA (START SCREEN) -->
-            <section id="screen-start" class="screen-view">
+        <section id="screen-start" class="screen-view">
+            <!-- Background Decorations for Ramadan Menu -->
+            <div class="menu-bg-decor">
+                <div class="menu-moon">🌙</div>
+                <div class="menu-lantern-left">🪔</div>
+                <div class="menu-lantern-right">✨</div>
+                <div class="menu-mosque-bottom"></div>
+            </div>
+
+            <div class="start-card">
                 <div class="start-banner">
-                    <div class="pixel-icon">🌙</div>
-                    <h1 class="game-title">MISI RAMADAN ADAM</h1>
-                    <p class="game-subtitle">- RETRO EDITION -</p>
+                    <div class="pixel-icon">🕌</div>
+                    <h1 class="game-title">MISI RAMADAN<br>BERSAMA ADAM</h1>
+                    <div class="game-subtitle">Kembara Ramadan Interaktif</div>
                 </div>
-                
                 <div class="start-menu">
                     <button onclick="startGame()" class="jrpg-btn primary">▶ MULA GAME</button>
                     <button onclick="showInfo('how-to-play')" class="jrpg-btn">📖 CARA MAIN</button>
                     <button onclick="showInfo('objectives')" class="jrpg-btn">🎯 OBJEKTIF</button>
                 </div>
+            </div>
 
-                <!-- MODAL INFO -->
-                <div id="info-modal" class="modal hidden">
-                    <div class="jrpg-dialog-box modal-box">
-                        <h2 id="modal-title" class="speaker-tag"></h2>
-                        <div id="modal-body" class="dialog-content"></div>
-                        <button onclick="closeInfo()" class="jrpg-btn btn-small">TUTUP [X]</button>
-                    </div>
+            <div id="info-modal" class="modal hidden">
+                <div class="jrpg-dialog-box modal-box">
+                    <h2 id="modal-title" class="speaker-tag"></h2>
+                    <div id="modal-body" class="dialog-content"></div>
+                    <button onclick="closeInfo()" class="jrpg-btn btn-small">TUTUP</button>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- SKRIN STAGE / PENTAS GAME (GAMEPLAY) -->
-            <section id="screen-game" class="screen-view hidden">
-                
-                <!-- DUNIA / STAGE UTAMA -->
-                <div id="game-stage" class="stage-world bg-sahur">
-                    <!-- SPRITE WATAK -->
-                    <div id="sprite-npc" class="sprite npc-sprite">👵</div>
-                    <div id="sprite-adam" class="sprite adam-sprite bounce">🛌</div>
-                </div>
-
-                <!-- DIALOG BOX JRPG -->
-                <div class="jrpg-dialog-box">
-                    <div class="speaker-tag">
-                        <span id="speaker-name">MAK</span>
-                    </div>
-
-                    <div id="story-text" class="dialog-content">
-                        Adam, bangun sahur nak...
-                    </div>
-
-                    <!-- MAKLUM BALAS / FEEDBACK -->
-                    <div id="feedback-box" class="dialog-feedback hidden"></div>
-
-                    <!-- PILIHAN JAWAPAN -->
-                    <div id="options-container" class="command-grid"></div>
+        <section id="screen-game" class="screen-view hidden">
+            <div id="game-stage" class="stage-world bg-sahur">
+                <!-- Scene Decorative Elements Layer -->
+                <div id="scene-decor" class="scene-decor">
+                    <div class="moon">🌙</div>
+                    <div class="stars">✨ ✨</div>
+                    <div class="house-silhouette"></div>
                 </div>
 
-            </section>
+                <div id="sprite-npc" class="sprite npc-sprite">👵</div>
+                <div id="sprite-adam" class="sprite adam-sprite bounce">🛌</div>
+            </div>
+            <div class="jrpg-dialog-box">
+                <div class="speaker-tag"><span id="speaker-name">MAK</span></div>
+                <div id="story-text" class="dialog-content">Adam, bangun sahur nak...</div>
+                <div id="feedback-box" class="dialog-feedback hidden"></div>
+                <div id="options-container" class="command-grid"></div>
+            </div>
+        </section>
 
-            <!-- SKRIN KEPUTUSAN (RESULT SCREEN) -->
-            <section id="screen-result" class="screen-view hidden">
-                <div class="jrpg-dialog-box result-box">
-                    <h1 class="result-header">🏆 PERMAINAN TAMAT</h1>
-                    <div class="result-stats">
-                        <p>TENAGA AKHIR : <span id="final-hp" class="text-gold">100%</span></p>
-                        <p>TOTAL SCORE  : <span id="final-score" class="text-gold">0</span></p>
-                    </div>
-                    <div id="evaluation-badge" class="result-badge"></div>
-                    <div class="result-actions">
-                        <button onclick="resetGame()" class="jrpg-btn primary">🔄 MAIN SEMULA</button>
-                        <button onclick="toggleNotes()" class="jrpg-btn">📖 NOTA PUASA</button>
-                    </div>
+        <section id="screen-result" class="screen-view hidden">
+            <div class="jrpg-dialog-box result-box">
+                <h1 class="result-header">🏆 PERMAINAN TAMAT</h1>
+                <div class="result-stats">
+                    <p>TENAGA AKHIR : <span id="final-hp" class="text-gold">100%</span></p>
+                    <p>TOTAL SKOR  : <span id="final-score" class="text-gold">0</span></p>
                 </div>
-
-                <!-- MODAL NOTA -->
-                <div id="notes-modal" class="modal hidden">
-                    <div class="jrpg-dialog-box modal-box">
-                        <h2 class="speaker-tag">📌 NOTA RINGKAS PUASA</h2>
-                        <div class="dialog-content notes-text">
-                            <p><strong>Maksud Puasa:</strong> Menahan diri daripada perkara membatalkan puasa dari terbit fajar hingga terbenam matahari beserta niat.</p>
-                            <p><strong>Perkara Batal:</strong> Makan/minum sengaja, muntah sengaja, masuk benda ke rongga terbuka.</p>
-                            <p><strong>Amalan Sunat:</strong> Bersahur, bersegera berbuka, berbuka dengan kurma & Solat Tarawih.</p>
-                        </div>
-                        <button onclick="toggleNotes()" class="jrpg-btn btn-small">TUTUP [X]</button>
-                    </div>
+                <div id="evaluation-badge" class="result-badge"></div>
+                <div class="result-actions">
+                    <button onclick="resetGame()" class="jrpg-btn primary">🔄 MAIN SEMULA</button>
+                    <button onclick="toggleNotes()" class="jrpg-btn">📖 NOTA PUASA</button>
                 </div>
-            </section>
-
-        </div>
+            </div>
+            <div id="notes-modal" class="modal hidden">
+                <div class="jrpg-dialog-box modal-box">
+                    <h2 class="speaker-tag">📌 NOTA RINGKAS PUASA</h2>
+                    <div class="dialog-content notes-text">
+                        <p><strong>Maksud Puasa:</strong> Menahan diri daripada perkara membatalkan puasa dari terbit fajar hingga terbenam matahari beserta niat.</p>
+                        <p><strong>Perkara Batal:</strong> Makan/minum sengaja, muntah sengaja, masuk benda ke rongga terbuka.</p>
+                        <p><strong>Amalan Sunat:</strong> Bersahur, bersegera berbuka, berbuka dengan kurma & Solat Tarawih.</p>
+                    </div>
+                    <button onclick="toggleNotes()" class="jrpg-btn btn-small">TUTUP</button>
+                </div>
+            </div>
+        </section>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<script>
+// ===== SISTEM BUNYI LEMBUT (SOFT & GENTLE AUDIO SYNTHESIZER) =====
+let audioCtx = null, bgmInterval = null, isMuted = false;
+
+function initAudio(){
+    if(!audioCtx){
+        const A = window.AudioContext || window.webkitAudioContext;
+        if(A) audioCtx = new A();
+    }
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+// Bunyi klik butang lembut (Sine wave lembut)
+function playSoundClick(){
+    initAudio();
+    if(isMuted || !audioCtx) return;
+    try{
+        const t = audioCtx.currentTime;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(360, t);
+        o.frequency.exponentialRampToValueAtTime(520, t + 0.06);
+        g.gain.setValueAtTime(0.04, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(t); o.stop(t + 0.06);
+    }catch(e){}
+}
+
+// Bunyi jawapan betul (Melodi Chime Marimba yang merdu)
+function playSoundCorrect(){
+    initAudio();
+    if(isMuted || !audioCtx) return;
+    try{
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+            const t = audioCtx.currentTime + (i * 0.07);
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, t);
+            g.gain.setValueAtTime(0.04, t);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start(t); o.stop(t + 0.28);
+        });
+    }catch(e){}
+}
+
+// Bunyi jawapan salah (Hum lembut, tidak bising)
+function playSoundWrong(){
+    initAudio();
+    if(isMuted || !audioCtx) return;
+    try{
+        const t = audioCtx.currentTime;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(240, t);
+        o.frequency.exponentialRampToValueAtTime(180, t + 0.22);
+        g.gain.setValueAtTime(0.04, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(t); o.stop(t + 0.22);
+    }catch(e){}
+}
+
+// Muzik Latar (BGM) Santai & Menenangkan (Soft Pentatonic Chimes)
+function startBGM(){
+    if(bgmInterval || isMuted) return;
+    initAudio();
+    // Melodi pentatonic lembut & tenang
+    const melody = [
+        261.63, 329.63, 392.00, 523.25,
+        392.00, 329.63, 261.63, 196.00,
+        220.00, 261.63, 329.63, 392.00,
+        329.63, 261.63, 220.00, 196.00
+    ];
+    let step = 0;
+    bgmInterval = setInterval(() => {
+        if(isMuted || !audioCtx || audioCtx.state !== 'running') return;
+        try{
+            const t = audioCtx.currentTime;
+            const freq = melody[step];
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, t);
+            
+            g.gain.setValueAtTime(0.001, t);
+            g.gain.linearRampToValueAtTime(0.02, t + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.0005, t + 0.45);
+            
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start(t); o.stop(t + 0.5);
+            step = (step + 1) % melody.length;
+        }catch(e){}
+    }, 340);
+}
+
+function stopBGM(){ if(bgmInterval){ clearInterval(bgmInterval); bgmInterval = null; } }
+function toggleAudio(){ playSoundClick(); isMuted = !isMuted; document.getElementById('sound-btn').innerText = isMuted ? '🔇' : '🔊'; if(isMuted) stopBGM(); else startBGM(); }
+
+// ===== STORY DATASET =====
+const storyData = [
+{phase:"SAHUR", bgClass:"bg-sahur", speaker:"MAK", dialogue:"Adam, bangun sahur nak... Nanti lapar siang hari.", adamSprite:"🛌", npcSprite:"👵", options:[
+    {text:"A. Sambung tidur...", feedback:"❌ SALAH! Tidak bersahur membuatkan Adam cepat letih. Amalan sunat bersahur ditinggalkan.", nextSprite:"😴", hpChange:-20, scoreChange:0, isCorrect:false},
+    {text:"B. Bangun bersahur & berniat", feedback:"✅ BETUL! Bersahur ialah amalan sunat yang berkat dan memberi tenaga.", nextSprite:"👦", hpChange:10, scoreChange:15, isCorrect:true}
+]},
+{phase:"SAHUR", bgClass:"bg-sahur", speaker:"MAK", dialogue:"Adam, cuba cerita, bilakah sebenarnya waktu puasa kita bermula dan tamat setiap hari?", adamSprite:"👦", npcSprite:"👵", options:[
+    {text:"A. Dari terbit bulan hingga terbit matahari", feedback:"❌ SALAH! Jawapan betul: Puasa bermula dari terbit fajar sehingga terbenam matahari (Maghrib).", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Dari terbit fajar hingga terbenam matahari", feedback:"✅ BETUL! Waktu puasa ialah dari terbit fajar sehingga terbenam matahari (Maghrib).", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"SAHUR", bgClass:"bg-sahur", speaker:"MAK", dialogue:"Bilakah waktu kita wajib berniat puasa Ramadan, Adam?", adamSprite:"👦", npcSprite:"👵", options:[
+    {text:"A. Selepas berbuka", feedback:"❌ SALAH! Jawapan betul: Niat puasa Ramadan mesti dibuat pada waktu malam sebelum terbit fajar.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Waktu malam sebelum fajar", feedback:"✅ BETUL! Niat puasa wajib dilakukan pada waktu malam sebelum terbit fajar.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Selepas solat Zuhur", feedback:"❌ SALAH! Jawapan betul: Waktu Zuhur sudah terlewat untuk berniat puasa wajib.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"SAHUR", bgClass:"bg-sahur", speaker:"MAK", dialogue:"Adam, sebenarnya bila waktu yang paling elok untuk bersahur dan berbuka?", adamSprite:"👦", npcSprite:"👵", options:[
+    {text:"A. Cepat-cepat sahur awal Isyak & lambatkan berbuka", feedback:"❌ SALAH! Jawapan betul: Sunat melambatkan sahur (dekat waktu Subuh) dan menyegerakan berbuka.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Lambatkan sahur dekat Subuh & segerakan berbuka", feedback:"✅ BETUL! Sunat puasa ialah melambatkan bersahur dan menyegerakan berbuka.", nextSprite:"😋", hpChange:5, scoreChange:15, isCorrect:true}
+]},
+{phase:"KELAS", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Sebelum kita mula kelas Pendidikan Islam hari ini, siapa boleh jawab, apakah maksud 'puasa' dari segi bahasa?", adamSprite:"🙋", npcSprite:"👩‍🏫", options:[
+    {text:"A. Menahan diri daripada makan sahaja", feedback:"❌ SALAH! Jawapan betul: Dari segi bahasa, puasa bermaksud 'menahan diri' secara umum.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Menahan diri", feedback:"✅ BETUL! Dari segi bahasa, puasa bermaksud menahan diri.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Membaca Al-Quran dari fajar ke Maghrib", feedback:"❌ SALAH! Jawapan betul: Dari segi bahasa, puasa bermaksud menahan diri.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"KELAS", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Apakah pula hukum berpuasa Ramadan bagi umat Islam yang cukup syarat?", adamSprite:"🙋", npcSprite:"👩‍🏫", options:[
+    {text:"A. Sunat Muakkad", feedback:"❌ SALAH! Jawapan betul: Puasa Ramadan hukumnya WAJIB bagi yang cukup syarat.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Wajib", feedback:"✅ BETUL! Puasa Ramadan wajib ke atas setiap Muslim yang cukup syarat.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Harus", feedback:"❌ SALAH! Jawapan betul: Puasa Ramadan hukumnya WAJIB.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"KELAS", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Antara berikut, yang manakah syarat WAJIB puasa Ramadan?", adamSprite:"🙋", npcSprite:"👩‍🏫", options:[
+    {text:"A. Suci daripada haid dan nifas", feedback:"❌ SALAH! Jawapan betul: Itu ialah syarat SAH puasa, bukan syarat wajib.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Baligh dan berakal", feedback:"✅ BETUL! Baligh dan berakal ialah antara syarat wajib puasa.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Berada di tempat tinggal sendiri", feedback:"❌ SALAH! Jawapan betul: Baligh dan berakal ialah syarat wajib puasa.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"KELAS", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Kalau tadi syarat wajib, sekarang cuba pula: yang manakah syarat SAH puasa?", adamSprite:"🙋", npcSprite:"👩‍🏫", options:[
+    {text:"A. Beragama Islam", feedback:"✅ BETUL! Beragama Islam ialah antara syarat sah puasa.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"B. Kaya dan berkemampuan", feedback:"❌ SALAH! Jawapan betul: Beragama Islam ialah syarat sah puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"C. Sampai umur baligh", feedback:"❌ SALAH! Jawapan betul: Sampai umur baligh ialah syarat wajib.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"KELAS", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Terakhir sebelum kelas tamat, apakah DUA rukun puasa yang utama?", adamSprite:"🙋", npcSprite:"👩‍🏫", options:[
+    {text:"A. Niat dan bersahur", feedback:"❌ SALAH! Jawapan betul: Rukun puasa ialah niat dan menahan diri daripada perkara yang membatalkan puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Niat dan menahan diri daripada perkara membatalkan puasa", feedback:"✅ BETUL! Itulah dua rukun puasa yang utama.", nextSprite:"😊", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Bersahur dan berbuka", feedback:"❌ SALAH! Jawapan betul: Rukun puasa ialah niat dan menahan diri daripada perkara membatalkan puasa.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"SEKOLAH", bgClass:"bg-sekolah", speaker:"KAWAN", dialogue:"Adam! Jom makan ayam goreng kat kantin ni, sedapnya!", adamSprite:"😰", npcSprite:"👦", options:[
+    {text:"A. Makan sikit sahaja...", feedback:"❌ SALAH! Makan dengan sengaja membatalkan puasa Ramadan!", nextSprite:"🍗", hpChange:-25, scoreChange:0, isCorrect:false},
+    {text:"B. Pergi berehat di perpustakaan", feedback:"✅ BETUL! Adam menjaga puasa dan menahan nafsu makan.", nextSprite:"👦", hpChange:-5, scoreChange:15, isCorrect:true}
+]},
+{phase:"SEKOLAH", bgClass:"bg-sekolah", speaker:"CIKGU", dialogue:"Adam, hidung kamu berdarah! Adakah puasa kamu batal?", adamSprite:"🩸", npcSprite:"👩‍🏫", options:[
+    {text:"A. Ya, puasa telah batal!", feedback:"❌ SALAH! Jawapan betul: Darah yang keluar tanpa disengajakan TIDAK membatalkan puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Tidak batal!", feedback:"✅ BETUL! Perkara tidak disengajakan seperti darah hidung tidak membatalkan puasa.", nextSprite:"😊", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"SEKOLAH", bgClass:"bg-sekolah", speaker:"ADAM", dialogue:"Semasa rehat, tanpa sedar Adam terhirup sedikit air dari botol sebab terlupa yang dia sedang berpuasa!", adamSprite:"😳", npcSprite:"🚰", options:[
+    {text:"A. Risau dan anggap puasa terus batal", feedback:"❌ SALAH! Jawapan betul: Jika terlupa dan tidak sengaja, puasa TIDAK batal.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Bertenang, berhenti terus dan sambung berpuasa", feedback:"✅ BETUL! Perkara yang berlaku secara tidak sengaja atau kerana lupa tidak membatalkan puasa.", nextSprite:"😊", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"SEKOLAH", bgClass:"bg-sekolah", speaker:"KAWAN NAKAL", dialogue:"Haha! Adam lemah, muka pucat macam hantu!", adamSprite:"😔", npcSprite:"😜", options:[
+    {text:"A. Membalas dengan marah", feedback:"❌ SALAH! Jawapan betul: Orang berpuasa wajib menahan marah dan menjaga akhlak.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Bersabar & kata 'Aku berpuasa'", feedback:"✅ BETUL! Bersabar dan menahan marah menambah pahala puasa.", nextSprite:"😇", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"PETANG", bgClass:"bg-petang", speaker:"USTAZ", dialogue:"Adam dahaga dan nak berkumur air. Apa hukum berkumur secara berlebihan?", adamSprite:"🚴", npcSprite:"👳", options:[
+    {text:"A. Sunat dan dapat pahala", feedback:"❌ SALAH! Jawapan betul: Berkumur secara berlebihan ketika berpuasa hukumnya MAKRUH.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Makruh & boleh batal jika tertelan", feedback:"✅ BETUL! Berkumur berlebihan adalah makruh dan berisiko membatalkan puasa jika tertelan.", nextSprite:"🚰", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"PETANG", bgClass:"bg-petang", speaker:"KAWAN", dialogue:"Lepas main bola waktu petang panas, Adam rasa sangat loya dan tergoda nak muntahkan diri supaya rasa lega.", adamSprite:"🤢", npcSprite:"⚽", options:[
+    {text:"A. Sengaja muntahkan diri supaya lega", feedback:"❌ SALAH! Muntah dengan SENGAJA membatalkan puasa.", nextSprite:"😖", hpChange:-25, scoreChange:0, isCorrect:false},
+    {text:"B. Berehat sekejap, jangan buat dengan sengaja", feedback:"✅ BETUL! Jika muntah berlaku tanpa sengaja puasa tidak batal, tetapi jika sengaja ia membatalkan puasa.", nextSprite:"😌", hpChange:-5, scoreChange:15, isCorrect:true}
+]},
+{phase:"PETANG", bgClass:"bg-petang", speaker:"ADIK", dialogue:"Abang Adam, kenapa saya tak dipaksa puasa penuh? Saya nak cuba puasa macam abang!", adamSprite:"👦", npcSprite:"🧒", options:[
+    {text:"A. Sebab adik memang wajib puasa penuh macam abang", feedback:"❌ SALAH! Jawapan betul: Kanak-kanak yang belum baligh tidak diwajibkan berpuasa penuh.", hpChange:-5, scoreChange:0, isCorrect:false},
+    {text:"B. Sebab adik belum baligh, tapi digalakkan belajar sikit-sikit", feedback:"✅ BETUL! Kanak-kanak yang belum baligh tidak wajib berpuasa, tetapi digalakkan berlatih.", nextSprite:"😊", hpChange:5, scoreChange:20, isCorrect:true}
+]},
+{phase:"PETANG", bgClass:"bg-petang", speaker:"MAK", dialogue:"Sementara tunggu waktu berbuka, jom kita baca Al-Quran sekejap dan masukkan derma dalam tabung masjid.", adamSprite:"👦", npcSprite:"🧕", options:[
+    {text:"A. Malas ah, tunggu berbuka je", feedback:"❌ SALAH! Jawapan betul: Memperbanyakkan sedekah dan bacaan Al-Quran adalah amalan sunat yang digalakkan.", hpChange:-5, scoreChange:0, isCorrect:false},
+    {text:"B. Baiklah, jom baca Quran & bersedekah", feedback:"✅ BETUL! Memperbanyakkan sedekah dan bacaan Al-Quran adalah amalan sunat di bulan Ramadan.", nextSprite:"📖", hpChange:0, scoreChange:20, isCorrect:true}
+]},
+{phase:"PETANG", bgClass:"bg-petang", speaker:"IBU", dialogue:"Adam, boleh tolong ibu sediakan makanan di meja?", adamSprite:"👦", npcSprite:"🧕", options:[
+    {text:"A. Main game di telefon", feedback:"❌ SALAH! Adam terlepas amalan mulia membantu ibu bapa di bulan puasa.", nextSprite:"📱", hpChange:-5, scoreChange:0, isCorrect:false},
+    {text:"B. Tolong ibu di dapur", feedback:"✅ BETUL! Membantu ibu bapa mendapat pahala yang sangat besar.", nextSprite:"🍲", hpChange:-5, scoreChange:20, isCorrect:true}
+]},
+{phase:"BERBUKA", bgClass:"bg-berbuka", speaker:"AYAH", dialogue:"Azan Maghrib dah berkumandang! Mari berbuka Adam.", adamSprite:"🍽️", npcSprite:"🧔", options:[
+    {text:"A. Terus makan gelojoh", feedback:"❌ SALAH! Jawapan betul: Sunnah berbuka didahului dengan membaca doa & makan kurma/air.", hpChange:0, scoreChange:5, isCorrect:false},
+    {text:"B. Baca doa & makan kurma dulu", feedback:"✅ BETUL! Adam mengamalkan adab dan sunnah Nabi SAW ketika berbuka.", nextSprite:"🌴", hpChange:20, scoreChange:25, isCorrect:true}
+]},
+{phase:"BERBUKA", bgClass:"bg-berbuka", speaker:"AYAH", dialogue:"Jom Adam, kita ke masjid untuk Solat Tarawih!", adamSprite:"👦", npcSprite:"🕌", options:[
+    {text:"A. Nak sambung tengok TV", feedback:"❌ SALAH! Rugi Adam tidak menghidupkan malam Ramadan dengan Solat Tarawih.", nextSprite:"📺", hpChange:0, scoreChange:0, isCorrect:false},
+    {text:"B. Ikut ayah ke masjid", feedback:"✅ BETUL! Solat Tarawih berjemaah ialah amalan sunat muakkad!", nextSprite:"🕌", hpChange:0, scoreChange:20, isCorrect:true}
+]},
+{phase:"MALAM", bgClass:"bg-malam", speaker:"AYAH", dialogue:"Lepas Tarawih ni, Ayah nak tanya, apa hikmah berpuasa dari segi kesihatan badan kita?", adamSprite:"🌙", npcSprite:"🧔", options:[
+    {text:"A. Boleh jimat duit belanja je", feedback:"❌ SALAH! Jawapan betul: Puasa memberi rehat kepada sistem penghadaman dan membantu kawal berat badan.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Memberi rehat kepada penghadaman & kawal berat badan", feedback:"✅ BETUL! Itulah antara hikmah puasa dari segi kesihatan.", hpChange:0, scoreChange:15, isCorrect:true}
+]},
+{phase:"MALAM", bgClass:"bg-malam", speaker:"USTAZ", dialogue:"Sebelum balik, cuba jawab: 'Niat dan menahan diri daripada perkara membatalkan puasa dari fajar hingga Maghrib' ialah kategori apa?", adamSprite:"🌙", npcSprite:"👳", options:[
+    {text:"A. Sunat puasa", feedback:"❌ SALAH! Jawapan betul: Itu ialah RUKUN puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Rukun puasa", feedback:"✅ BETUL! Niat dan menahan diri daripada perkara membatalkan puasa ialah rukun puasa.", hpChange:0, scoreChange:15, isCorrect:true},
+    {text:"C. Perkara membatalkan puasa", feedback:"❌ SALAH! Jawapan betul: Itu ialah RUKUN puasa.", hpChange:-10, scoreChange:0, isCorrect:false}
+]},
+{phase:"MALAM", bgClass:"bg-malam", speaker:"USTAZ", dialogue:"Satu lagi soalan, kalau seseorang itu pengsan atau gila sepanjang hari semasa berpuasa, apakah statusnya?", adamSprite:"🌙", npcSprite:"👳", options:[
+    {text:"A. Sunat puasa", feedback:"❌ SALAH! Jawapan betul: Gila atau pengsan sepanjang hari MEMBATALKAN puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"B. Syarat sah puasa", feedback:"❌ SALAH! Jawapan betul: Gila atau pengsan sepanjang hari MEMBATALKAN puasa.", hpChange:-10, scoreChange:0, isCorrect:false},
+    {text:"C. Membatalkan puasa", feedback:"✅ BETUL! Gila atau pengsan sepanjang hari termasuk dalam perkara yang membatalkan puasa.", nextSprite:"🌟", hpChange:0, scoreChange:15, isCorrect:true}
+]}
+];
+
+// ===== STATE GAME =====
+let hp = 100, score = 0, currentStep = 0, isProcessing = false;
+
+function startGame(){
+    initAudio();
+    startBGM();
+    playSoundClick();
+    hp = 100; score = 0; currentStep = 0; isProcessing = false;
+    document.getElementById('screen-start').classList.add('hidden');
+    document.getElementById('status-bar').classList.remove('hidden');
+    document.getElementById('screen-game').classList.remove('hidden');
+    loadStage();
+}
+
+function updateHUD(){
+    hp = Math.min(Math.max(Number(hp), 0), 100);
+    score = Math.max(Number(score), 0);
+    document.getElementById('hp-bar-fill').style.width = hp + '%';
+    document.getElementById('score-display').innerText = String(score).padStart(4, '0');
+    
+    if(storyData[currentStep]){
+        document.getElementById('phase-badge').innerText = storyData[currentStep].phase;
+    }
+}
+
+function renderDecorations(bgClass){
+    const decorContainer = document.getElementById('scene-decor');
+    if(!decorContainer) return;
+    
+    if(bgClass === 'bg-sahur'){
+        decorContainer.innerHTML = '<div class="moon">🌙</div><div class="stars">✨ ✨</div><div class="house-silhouette"></div>';
+    } else if(bgClass === 'bg-sekolah'){
+        decorContainer.innerHTML = '<div class="blackboard">📖 Kelas Agama - Indahnya Ramadan</div><div class="school-floor"></div>';
+    } else if(bgClass === 'bg-petang'){
+        decorContainer.innerHTML = '<div class="sun-setting"></div><div class="mosque-silhouette"></div>';
+    } else if(bgClass === 'bg-berbuka'){
+        decorContainer.innerHTML = '<div class="lanterns">🪔 ✨ 🪔</div><div class="dining-table">🌴 🥛 🍲</div>';
+    } else if(bgClass === 'bg-malam'){
+        decorContainer.innerHTML = '<div class="full-moon">🌕</div><div class="glowing-mosque"></div>';
+    } else {
+        decorContainer.innerHTML = '';
+    }
+}
+
+function loadStage(){
+    if(currentStep >= storyData.length){
+        endGame();
+        return;
+    }
+
+    const data = storyData[currentStep];
+    const stage = document.getElementById('game-stage');
+    
+    // Set latar belakang bertema
+    stage.className = 'stage-world ' + data.bgClass;
+    renderDecorations(data.bgClass);
+
+    // Update sprites & teks
+    document.getElementById('sprite-npc').innerText = data.npcSprite;
+    document.getElementById('sprite-adam').innerText = data.adamSprite;
+    document.getElementById('speaker-name').innerText = data.speaker;
+    document.getElementById('story-text').innerText = data.dialogue;
+
+    // Reset maklum balas
+    const fbBox = document.getElementById('feedback-box');
+    fbBox.classList.add('hidden');
+    fbBox.className = 'dialog-feedback hidden';
+
+    // Bina pilihan butang (dirombak secara rawak)
+    const optsDiv = document.getElementById('options-container');
+    optsDiv.innerHTML = '';
+
+    // Salin dan rombak (shuffle) susunan pilihan jawapan
+    const shuffledOptions = [...data.options].sort(() => Math.random() - 0.5);
+
+    shuffledOptions.forEach((opt, idx) => {
+        // Bersihkan label lama (A., B., C.) dan cipta label baharu mengikut susunan rawak
+        const cleanText = opt.text.replace(/^[A-Z]\.\s*/, '');
+        const prefixLabel = String.fromCharCode(65 + idx) + '. ';
+
+        const btn = document.createElement('button');
+        btn.className = 'command-btn';
+        btn.innerText = prefixLabel + cleanText;
+        btn.onclick = () => handleChoice(opt);
+        optsDiv.appendChild(btn);
+    });
+
+    updateHUD();
+    isProcessing = false;
+}
+
+function showFloatingScore(amount){
+    const container = document.getElementById('floating-container');
+    if(!container) return;
+    const el = document.createElement('div');
+    el.className = 'float-score';
+    if(amount >= 0){
+        el.innerText = '+' + amount;
+        el.style.color = '#52B788';
+    } else {
+        el.innerText = amount;
+        el.style.color = '#E05638';
+    }
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+}
+
+function handleChoice(opt){
+    if(isProcessing) return;
+    isProcessing = true;
+
+    // Perubahan HP & Skor
+    hp += opt.hpChange;
+    score += opt.scoreChange;
+    updateHUD();
+
+    if(opt.scoreChange !== 0) showFloatingScore(opt.scoreChange);
+
+    // Animasi dan Bunyi
+    const adamSprite = document.getElementById('sprite-adam');
+    if(opt.isCorrect){
+        playSoundCorrect();
+        adamSprite.classList.add('bounce');
+    } else {
+        playSoundWrong();
+        adamSprite.classList.add('shake');
+        setTimeout(() => adamSprite.classList.remove('shake'), 400);
+    }
+
+    if(opt.nextSprite){
+        adamSprite.innerText = opt.nextSprite;
+    }
+
+    // Tunjukkan maklum balas
+    const fbBox = document.getElementById('feedback-box');
+    fbBox.innerText = opt.feedback;
+    fbBox.className = 'dialog-feedback ' + (opt.isCorrect ? 'correct' : 'wrong');
+    fbBox.classList.remove('hidden');
+
+    // Nyahaktifkan butang semasa proses
+    const btns = document.querySelectorAll('.command-btn');
+    btns.forEach(b => b.disabled = true);
+
+    // Beralih ke soalan seterusnya
+    setTimeout(() => {
+        currentStep++;
+        loadStage();
+    }, 2200);
+}
+
+function endGame(){
+    document.getElementById('screen-game').classList.add('hidden');
+    document.getElementById('screen-result').classList.remove('hidden');
+
+    document.getElementById('final-hp').innerText = hp + '%';
+    document.getElementById('final-score').innerText = score;
+
+    const badge = document.getElementById('evaluation-badge');
+    if(score >= 300 && hp >= 80){
+        badge.innerHTML = "🌟 <strong>ANUGERAH JUARA RAMADAN!</strong><br>Tahniah! Anda berjaya membimbing Adam berpuasa dengan sempurna, berilmu dan penuh amalan sunat!";
+    } else if(score >= 200){
+        badge.innerHTML = "👍 <strong>PEJUANG PUASA HEBAT!</strong><br>Syabas! Anda berjaya membimbing Adam menahan puasa dengan baik!";
+    } else {
+        badge.innerHTML = "💪 <strong>BOLEH CUBA LAGI!</strong><br>Teruskan usaha untuk membantu Adam berpuasa dengan lebih mantap!";
+    }
+}
+
+function resetGame(){
+    playSoundClick();
+    document.getElementById('screen-result').classList.add('hidden');
+    startGame();
+}
+
+function toggleNotes(){
+    playSoundClick();
+    const modal = document.getElementById('notes-modal');
+    modal.classList.toggle('hidden');
+}
+
+function showInfo(type){
+    playSoundClick();
+    const modal = document.getElementById('info-modal');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
+
+    if(type === 'how-to-play'){
+        title.innerText = '📖 CARA MAIN';
+        body.innerHTML = '<p>1. Jawab soalan & buat pilihan untuk membantu Adam berpuasa.</p><p>2. Kekalkan Tenaga (HP) dan kumpul skor sebanyak mungkin.</p><p>3. Belajar hukum & sunnah puasa sepanjang perjalanan!</p>';
+    } else if(type === 'objectives'){
+        title.innerText = '🎯 OBJEKTIF';
+        body.innerHTML = '<p>Bantu Adam menyempurnakan ibadah puasa Ramadan dari sahur hingga solat Tarawih dengan pengetahuan agama yang tepat!</p>';
+    }
+    modal.classList.remove('hidden');
+}
+
+function closeInfo(){
+    playSoundClick();
+    document.getElementById('info-modal').classList.add('hidden');
+}
+</script>
 </body>
 </html>
